@@ -19,6 +19,7 @@ public class EmployeeController {
 	@PostMapping("/saveEmployee")
 	public EmployeeMaster saveEmployee(@RequestBody EmployeeMaster employee)
 	{
+	
 		EmployeeMaster createdEmployee = employeeService.saveEmployee(employee);
 		return createdEmployee;
 	}
