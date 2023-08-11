@@ -36,7 +36,7 @@ public String employeeLogin(LoginModel loginModel) {
 	if (optionalEmployee.isPresent()) {
 		EmployeeMaster employeeMaster= optionalEmployee.get();
 		if (employeeMaster.getPassword().equals(loginModel.password)) {
-			return "Logging in sucessful";
+			return "Logging in successful";
 		} else {
 			return "Invalid password";
 		}

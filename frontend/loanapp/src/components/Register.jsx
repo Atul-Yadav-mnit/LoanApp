@@ -10,6 +10,7 @@ const Register = ({user,loginUser}) => {
   const [gender, setGender] = useState('');
   const [dob, setDob] = useState('');
   const [doj, setDoj] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,7 +34,8 @@ const Register = ({user,loginUser}) => {
 
     axios.post("http://localhost:8080/saveEmployee", requestBody)
       .then((res) => {
-        alert("Created user");
+        alert(res.data);
+        navigate('/login');
       })
       .catch((err) => {
         console.log(err);
@@ -120,7 +122,9 @@ const Register = ({user,loginUser}) => {
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
-            placeholder="Password"  
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}  
           />
         </Form.Group>
 
@@ -129,7 +133,7 @@ const Register = ({user,loginUser}) => {
             Sign Up
           </Button>
           <p className="forgot-password mt-3">
-            Already registered? <a href="/sign-in">Sign In</a>
+            Already registered? <a href="/login">Login</a>
           </p>
         </div>
       </Form>

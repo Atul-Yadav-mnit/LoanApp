@@ -22,46 +22,49 @@ const Login = ({ user, loginUser}) => {
             password
         };
         
-        loginUser(employeeID);
+        // loginUser(employeeID);
 
-        // axios.post("http://localhost:8080/login", requestBody)
-        //     .then((res) => {
-        //         // loginUser(res.data.username);
-        //         
-        //         alert("Login Successful");
-        //     })
-        //     .catch((err) => {
-        //         console.log(err);
-        //         alert("Error: " + err);
-        //     });
+        axios.post("http://localhost:8080/login", requestBody)
+            .then((res) => {
+                alert(res.data);
+                if (res.data.includes('success')) {
+                    loginUser(employeeID);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                alert("Error: " + err);
+            });
     };
 
     
     const handleAdminLogin = (e) => {
         e.preventDefault();
         const requestBody = {
-            employeeID,
+            username: employeeID,
             password
         };
         
-        loginUser(employeeID);
+        // loginUser(employeeID);
 
-        // axios.post("http://localhost:8080/login", requestBody)
-        //     .then((res) => {
-        //         // loginUser(res.data.username);
-        //         
-        //         alert("Login Successful");
-        //     })
-        //     .catch((err) => {
-        //         console.log(err);
-        //         alert("Error: " + err);
-        //     });
+        axios.post("http://localhost:8080/admin/login", requestBody)
+            .then((res) => {
+                alert(res.data);
+                if (res.data.includes('success')) {
+                    loginUser(employeeID);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                alert("Error: " + err);
+            });
     };
 
     return (
         <Container className="d-flex justify-content-center align-items-center min-vh-100">
-            <Form  className="p-3 bg-light align-items-center" style={{width: '50%'}}>
-                <h3 className="text-warning bg-danger text-center mb-3">Login</h3>
+            <Form  className=" bg-light align-items-center" style={{width: '50%'}}>
+                <h3 className="text-warning bg-danger text-center  mb-3 py-2 " tyle={{width: '100%'}}>Login</h3>
+              <div className="p-4 text-left">
                 <Form.Group controlId="employeeID">
                     <Form.Label>Employee ID</Form.Label>
                     <Form.Control
@@ -71,8 +74,8 @@ const Login = ({ user, loginUser}) => {
                         onChange={(e) => setEmployeeID(e.target.value)}
                     />
                 </Form.Group>
-                <Form.Group controlId="password">
-                    <Form.Label>Password</Form.Label>
+                <Form.Group className=" text-left w-90 " controlId="password">
+                    <Form.Label className="text-left w-90 ml-2 pl-2">Password</Form.Label>
                     <Form.Control
                         type="password"
                         placeholder="Password"
@@ -92,6 +95,8 @@ const Login = ({ user, loginUser}) => {
                     <p className="forgot-password text-right">
                         <a href="#">Forgot password?</a>
                     </p>
+                </div>
+
                 </div>
             </Form>
         </Container>
