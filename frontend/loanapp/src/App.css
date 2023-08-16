@@ -1,0 +1,16 @@
+.App{
+
+    margin-left: 3vw;
+    margin-right: 3vw;
+    margin-top: 1vw;
+    border-radius: 5px;
+    padding: 20px;
+    border: 1px solid gray;
+    background-color: lightgray;
+    font-family: sans-serif;
+    text-align: center;
+
+}
+.Nav{
+  padding-left: 0.5vw;
+}
