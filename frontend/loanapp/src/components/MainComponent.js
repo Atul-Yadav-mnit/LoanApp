@@ -8,6 +8,7 @@ import Login from './Login'
 import ApplyLoan from './ApplyLoan'
 import NavbarComponent from './NavbarComponent'
 import ViewLoan from './ViewLoan'
+import UserDashboard from './UserDashboard'
 
 const MainComponent = () => {
 
@@ -42,6 +43,7 @@ const MainComponent = () => {
               <Route path="/loan/apply" element={<ApplyLoan user={user} />} />
               <Route path="*" element={<NotFoundComponent />} />
               <Route path="/loan/apply" element={<ApplyLoan />}/>
+              <Route path="/dashboard" element={<UserDashboard />} />
             </Routes>
           </div>
         </div>

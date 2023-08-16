@@ -24,7 +24,7 @@ const Login = ({ user, loginUser}) => {
         
         // loginUser(employeeID);
 
-        axios.post("http://localhost:8080/login", requestBody)
+        axios.post("http://localhost:8080/employee/login", requestBody)
             .then((res) => {
                 alert(res.data);
                 if (res.data.includes('success')) {

@@ -32,7 +32,7 @@ const Register = ({user,loginUser}) => {
       password
     };
 
-    axios.post("http://localhost:8080/saveEmployee", requestBody)
+    axios.post("http://localhost:8080/employee/add", requestBody)
       .then((res) => {
         alert(res.data);
         navigate('/login');
