@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react'
 import axios from 'axios';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, Form } from 'react-bootstrap';
 
 function AdminLoanEdit() {
   const userName = sessionStorage.getItem("username");
@@ -50,6 +50,23 @@ function AdminLoanEdit() {
     handleOpen();
   }
 
+  const handleEditSubmit = () => {
+      const requestBody = {
+        loanId: editingLoanId,
+        loanType: editingLoanType,
+        durationOfYears: editingDurationOfYears
+      };
+      axios.put(`http://localhost:8080/loanCard/${editingLoanId}?userName=${userName}`, requestBody)
+      .then((res) => {
+        alert(res.data);
+        fetchAllLoanCards();
+        handleClose();
+      }).catch((err) => {
+        console.log(err);
+        alert("Error: " + err);
+      });
+  }
+
   const handleClose = () => setShowEditForm(false);
   const handleOpen = () => setShowEditForm(true);
 
@@ -62,12 +79,39 @@ return (
         <Modal.Title>Edit Loan</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+      <Form onSubmit={(e) => e.preventDefault()} className="p-3 bg-light align-items-center" style={{ width: '50%' }}>
+      <Form.Group controlId="loanType">
+          <Form.Label>Loan Id</Form.Label>
+          <Form.Control
+            type="text"
+            value={editingLoanId}
+            disabled
+          />
+        </Form.Group>
+      <Form.Group controlId="loanType">
+          <Form.Label>Loan Type</Form.Label>
+          <Form.Control
+            type="text"
+            value={editingLoanType}
+            onChange={(e) => setEditingLoanType(e.target.value)}
+          />
+        </Form.Group>
 
+
+        <Form.Group controlId="durationOfYears">
+          <Form.Label>Duration in Years</Form.Label>
+          <Form.Control
+            type="number"
+            value={editingDurationOfYears}
+            onChange={(e) => setEditingDurationOfYears(e.target.value)}
+          />
+        </Form.Group>
+        </Form>
 
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>Close</Button>
-        <Button variant="primary" onClick={handleClose}>Save Changes</Button>
+        <Button variant="primary" onClick={handleEditSubmit}>Save Changes</Button>
       </Modal.Footer>
     </Modal>
 
