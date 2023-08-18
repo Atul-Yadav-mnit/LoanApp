@@ -7,6 +7,7 @@ import NotFoundComponent from './NotFoundComponent';
 import Login from './Login'
 import ApplyLoan from './ApplyLoan'
 import NavbarComponent from './NavbarComponent'
+import NavbarComponentAdmin from './NavbarComponentAdmin'
 import ViewLoan from './ViewLoan'
 import UserDashboard from './UserDashboard'
 import ViewItem from './ViewItem'
@@ -51,7 +52,8 @@ const MainComponent = () => {
 
   return (
       <div>
-        <NavbarComponent user={user} loginUser = {loginUser} logoutUser={logoutUser}/>
+        {(role==="admin") ? <NavbarComponentAdmin logoutUser={logoutUser} />
+         : <NavbarComponent user={user} loginUser = {loginUser} logoutUser={logoutUser}/> }
         <div className="auth-wrapper">
           <div className="auth-inner">
             <Routes>
