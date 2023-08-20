@@ -5,7 +5,7 @@ import {useNavigate} from 'react-router-dom';
 
 function HomeComponent({user,role}) {
 
-  const [display,setDisplay] = useState("")
+  const [display,setDisplay] = useState(<></>)
   
   const navigate = useNavigate();
   
@@ -32,9 +32,9 @@ function HomeComponent({user,role}) {
 
  
   return (
-    <div>
-      <h1>{display}</h1>
-    </div>
+    <>
+      {display}
+    </>
   )
 
 }

@@ -51,11 +51,11 @@ const MainComponent = () => {
   }
 
   return (
-      <div>
+      <div className='h-100'>
         {(role==="admin") ? <NavbarComponentAdmin logoutUser={logoutUser} />
          : <NavbarComponent user={user} loginUser = {loginUser} logoutUser={logoutUser}/> }
-        <div className="auth-wrapper">
-          <div className="auth-inner">
+        <div className="auth-wrapper h-100">
+          <div className="auth-inner h-100">
             <Routes>
               <Route path="/" element={<HomeComponent user={user} role={role}/>} />
               <Route path="/about" element={<AboutUsComponent />} />

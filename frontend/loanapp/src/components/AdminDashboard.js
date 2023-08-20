@@ -1,9 +1,12 @@
-import Card from 'react-bootstrap/Card';
-import CardGroup from 'react-bootstrap/CardGroup';
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
-import { Container } from 'react-bootstrap';
+import Card from "react-bootstrap/Card";
+import CardGroup from "react-bootstrap/CardGroup";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { Button, Col, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
+import item_management from "../assets/item_management.webp";
+import loan_management from "../assets/loan_management.webp";
+import customer_management from "../assets/customer_management.webp";
 
 function AdminDashboard() {
   // const [admin, setAdmin] = useState();
@@ -13,74 +16,60 @@ function AdminDashboard() {
   //     if (loggedInUser) {
   //         setUser(loggedInUser);
   //     }
-  // }, [user]);  
+  // }, [user]);
 
   return (
-    <Container className="d-flex justify-content-center align-items-center ">
-      <CardGroup style={{ width: '97%', marginTop: '30px', borderRadius: '10px',padding:'10px' }}>
-        <Card>
-
-          <Card.Body>
-            <Card.Title>
-              <Card.Text>
-                Customer Data Management
-              </Card.Text>
-
-            </Card.Title>
-            <Link to="/admin/employee/add" style={{padding:'10px'}}>
-              <Button variant="primary">Add Employee</Button>
-            </Link>
-            <Link to="/admin/employee/edit"style={{padding:'10px'}}>
-              <Button variant="primary">Edit employee</Button>
-            </Link>
-
-          </Card.Body>
-          {/* <Card.Footer>
-          {/* <small className="text-muted">Last updated 3 mins ago</small> }
-        </Card.Footer> */}
-        </Card>
-        <Card>
-
-          <Card.Body>
-            <Card.Title>
-              <Card.Text>
-                Loan Card Management
-              </Card.Text>
-
-            </Card.Title>
-            <Link to="/admin/loan/add"style={{padding:'10px'}}>
-              <Button variant="primary">Add Loan Card</Button>
-            </Link>
-            <Link to="/admin/loan/edit"style={{padding:'10px'}}>
-              <Button variant="primary">Edit Loan Card</Button>
-            </Link>
-
-          </Card.Body>
-          {/* <Card.Footer>
-          <small className="text-muted">Last updated 3 mins ago</small>
-        </Card.Footer> */}
-        </Card>
-
-        <Card>
-
-          <Card.Body>
-            <Card.Title>
-              <Card.Text>
-                Item Data Management
-              </Card.Text>
-
-            </Card.Title>
-            <Link to="/admin/item/add"style={{padding:'10px'}}>
-              <Button variant="primary">Add Items</Button>
-            </Link>
-            <Link to="/admin/item/edit"style={{padding:'10px'}}>
-              <Button variant="primary">Edit Items</Button>
-            </Link>
-
-          </Card.Body>
-
-        </Card>
-      </CardGroup>
+    <Container className="d-flex justify-content-center align-items-center h-100">
+      <Row className="w-80 d-flex">
+        <Col>
+          <Card>
+            <Card.Img variant="top" src={customer_management} />
+            <Card.Body>
+              <Card.Title>
+                <Card.Text>Customer Data Management</Card.Text>
+              </Card.Title>
+              <Link to="/admin/employee/add" style={{ padding: "10px" }}>
+                <Button variant="success">Add Employee</Button>
+              </Link>
+              <Link to="/admin/employee/edit" style={{ padding: "10px" }}>
+                <Button variant="info">Edit Employee</Button>
+              </Link>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col>
+          <Card>
+            <Card.Img variant="top" src={loan_management} />
+            <Card.Body>
+              <Card.Title>
+                <Card.Text>Loan Card Management</Card.Text>
+              </Card.Title>
+              <Link to="/admin/loan/add" style={{ padding: "10px" }}>
+                <Button variant="success">Add Loan Card</Button>
+              </Link>
+              <Link to="/admin/loan/edit" style={{ padding: "10px" }}>
+                <Button variant="info">Edit Loan Card</Button>
+              </Link>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col>
+          <Card>
+            <Card.Img variant="top" src={item_management} />
+            <Card.Body>
+              <Card.Title>
+                <Card.Text>Item Data Management</Card.Text>
+              </Card.Title>
+              <Link to="/admin/item/add" style={{ padding: "10px" }}>
+                <Button variant="success">Add Items</Button>
+              </Link>
+              <Link to="/admin/item/edit" style={{ padding: "10px" }}>
+                <Button variant="info">Edit Items</Button>
+              </Link>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     </Container>
   );
 }

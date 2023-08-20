@@ -64,9 +64,9 @@ const Login = ({ user, role, loginUser}) => {
     };
 
     return (
-        <Container className="d-flex justify-content-center align-items-center">
-            <Form  className=" bg-light align-items-center" style={{width: '50%',marginTop:'30px',borderRadius:'10px'}}>
-                <h3 className="text-warning bg-danger text-center  mb-3 py-2 " tyle={{width: '100%'}}>Login</h3>
+        <Container className="d-flex justify-content-center align-items-center h-100">
+            <Form  className=" bg-light align-items-center" style={{width: '50%',borderRadius:'10px'}}>
+                <h3 className="text-warning bg-danger text-center  mb-3 py-2 " style={{width: '100%', borderRadius: '10px 10px 0px 0px', overflow:'hidden'}}>Login</h3>
               <div className="p-4 text-left">
                 <Form.Group controlId="employeeID">
                     <Form.Label>Employee ID</Form.Label>
@@ -77,7 +77,7 @@ const Login = ({ user, role, loginUser}) => {
                         onChange={(e) => setEmployeeID(e.target.value)}
                     />
                 </Form.Group>
-                <Form.Group className=" text-left w-90 " controlId="password">
+                <Form.Group className="text-left w-90" controlId="password">
                     <Form.Label className="text-left w-90 ml-2 pl-2">Password</Form.Label>
                     <Form.Control
                         type="password"

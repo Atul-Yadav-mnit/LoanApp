@@ -3,7 +3,7 @@ import { Navbar, Nav } from 'react-bootstrap';
 
 function NavbarComponentAdmin({ logoutUser }) {
   return (
-    <div>
+    <div className='position-fixed w-100'>
       <Navbar bg="light" expand="lg" className="Nav" >
         <Navbar.Brand href="/" className="Brand">LAMA</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
