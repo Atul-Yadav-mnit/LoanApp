@@ -46,10 +46,7 @@ public class EmployeeIssueService {
 			if(item.isPresent() && employee.isPresent() && loanCard.isPresent())
 			{
 				int numberOfYears = loanCard.get().getDurationOfYears();
-				Calendar c = Calendar.getInstance();
-				c.setTime(new Date());
-				c.add(Calendar.YEAR, numberOfYears);
-				Date returnDate = c.getTime();
+				Date returnDate = addYearsToDate(new Date(), numberOfYears);
 				EmployeeIssueDetails employeeIssueDetails = new EmployeeIssueDetails(Utils.generateUniqueId(),employee.get(),item.get(),new Date(),returnDate);
 				employeeIssueRepository.save(employeeIssueDetails);
 				return employeeIssueDetails;
@@ -62,7 +59,30 @@ public class EmployeeIssueService {
 
 		public ResponseEntity<List<EmployeeIssueDetails>> getAllEmployeeIssue(String employeeId) {
 			Optional<EmployeeMaster> employee = employeeRepository.findById(employeeId);
+			if (employee.isEmpty()) {
+				return ResponseGenerator.generateResponse(HttpStatus.BAD_REQUEST, "Invalid Employee ID", null);
+			}
 			List<EmployeeIssueDetails> employeeIssueList = employeeIssueRepository.findByEmployee(employee.get());
 			return ResponseGenerator.generateResponse(HttpStatus.OK,"", employeeIssueList);
 		}
+
+	public void updateReturnDate(String itemCategory, Integer newDurationOfYears) {
+		List<EmployeeIssueDetails> issuesToUpdate = employeeIssueRepository.findByItemCategory(itemCategory);
+		for (EmployeeIssueDetails issue: issuesToUpdate) {
+			Date oldReturnDate = issue.getReturnDate();
+			Date currentDate = new Date();
+			if (oldReturnDate.after(currentDate)) {
+				Date newReturnDate = addYearsToDate(issue.getIssueDate(), newDurationOfYears);
+				issue.setReturnDate(newReturnDate);
+				employeeIssueRepository.save(issue);
+			}
+		}
+	}
+
+	public Date addYearsToDate(Date date, int yearsToAdd) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.YEAR, yearsToAdd);
+		return calendar.getTime();
+	}
 }

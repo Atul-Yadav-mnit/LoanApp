@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.wellsfargo.loanapp.dao.LoanCardRepository;
 import com.wellsfargo.loanapp.model.LoanCardMaster;
 import com.wellsfargo.loanapp.utils.Utils;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LoanCardService {
@@ -20,6 +21,9 @@ public class LoanCardService {
 	
 	@Autowired
 	AdminService adminService;
+
+	@Autowired
+	EmployeeIssueService employeeIssueService;
 
 	public ResponseEntity<List<LoanCardMaster>> getAllLoanCards()
 	{
@@ -37,6 +41,7 @@ public class LoanCardService {
 		return ResponseGenerator.generateResponse(HttpStatus.UNAUTHORIZED, "Unauthorized Access: Invalid Admin username !!!", null);
 	}
 
+	@Transactional
 	public ResponseEntity<LoanCardMaster> updateLoanCard(String userName, String loanCardId, LoanCardMaster loanCard) {
 		if(adminService.verfiyAdminUsername(userName))
 		{
@@ -44,8 +49,8 @@ public class LoanCardService {
 			if (optionalLoanCard.isPresent()) {
 				LoanCardMaster updatedLoanCard = optionalLoanCard.get();
 				updatedLoanCard.setDurationOfYears(loanCard.getDurationOfYears());
-				updatedLoanCard.setLoanType(loanCard.getLoanType());
 				updatedLoanCard = loanCardRepository.save(updatedLoanCard);
+				employeeIssueService.updateReturnDate(updatedLoanCard.getLoanType(), updatedLoanCard.getDurationOfYears());
 				return ResponseGenerator.generateResponse(HttpStatus.OK, "Loan Card with Id "+loanCardId+" details Updated", updatedLoanCard);
 			} else {
 				return ResponseGenerator.generateResponse(HttpStatus.NOT_FOUND, "Loan Card with Id " + loanCardId +" not found!!! ", null);

@@ -96,14 +96,14 @@ function AdminItemEdit() {
             <Form.Group className="mb-3" controlId="Item">
               <Form.Label>Item Description</Form.Label>
               <Form.Control type="text" placeholder="Enter Item Description" value={editingItemDescription} onChange={(e) => setEditingItemDescription(e.target.value)} />
-            </Form.Group>able
+            </Form.Group>
             <Form.Group className="mb-3" controlId="Item">
               <Form.Label>Item Category</Form.Label>
-              <Form.Control type="text" placeholder="Enter Item Category" value={editingItemCategory} onChange={(e) => setEditingItemCategory(e.target.value)} />
+              <Form.Control type="text" placeholder="Enter Item Category" value={editingItemCategory} disabled />
             </Form.Group>
             <Form.Group className="mb-3" controlId="Item">
               <Form.Label>Item Make</Form.Label>
-              <Form.Control type="text" placeholder="Enter Item Make" value={editingItemMake} onChange={(e) => setEditingItemMake(e.target.value)} />
+              <Form.Control type="text" placeholder="Enter Item Make" value={editingItemMake} disabled />
             </Form.Group>
             <Form.Group className="mb-3" controlId="Item">
               <Form.Label>Item Valuation</Form.Label>

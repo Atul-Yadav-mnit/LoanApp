@@ -93,7 +93,7 @@ return (
           <Form.Control
             type="text"
             value={editingLoanType}
-            onChange={(e) => setEditingLoanType(e.target.value)}
+            disabled
           />
         </Form.Group>
 

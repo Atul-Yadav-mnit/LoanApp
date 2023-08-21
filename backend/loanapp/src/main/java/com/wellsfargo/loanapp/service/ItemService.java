@@ -39,13 +39,11 @@ public class ItemService {
 	public ResponseEntity<ItemMaster> updateItem(String userName, String itemId, ItemMaster item) {
 		if(adminService.verfiyAdminUsername(userName))
 		{
-			Optional<ItemMaster> optionaItem = itemRepository.findById(itemId);
-			if (optionaItem.isPresent()) {
-				ItemMaster updatedItem = optionaItem.get();
+			Optional<ItemMaster> optionalItem = itemRepository.findById(itemId);
+			if (optionalItem.isPresent()) {
+				ItemMaster updatedItem = optionalItem.get();
 				updatedItem.setIssueStatus(item.getIssueStatus());
-				updatedItem.setItemCategory(item.getItemCategory());
 				updatedItem.setItemDescription(item.getItemDescription());
-				updatedItem.setItemMake(item.getItemMake());
 				updatedItem.setItemValuation(item.getItemValuation());
 				updatedItem = itemRepository.save(updatedItem);
 				return ResponseGenerator.generateResponse(HttpStatus.OK,"Item with Id "+itemId+" details Updated",updatedItem);
@@ -59,9 +57,9 @@ public class ItemService {
 	public ResponseEntity<ItemMaster> deleteItem(String userName, String itemId) {
 		if(adminService.verfiyAdminUsername(userName))
 		{
-			Optional<ItemMaster> optionaItem = itemRepository.findById(itemId);
-			if (optionaItem.isPresent()) {
-				itemRepository.delete(optionaItem.get());
+			Optional<ItemMaster> optionalItem = itemRepository.findById(itemId);
+			if (optionalItem.isPresent()) {
+				itemRepository.delete(optionalItem.get());
 				return ResponseGenerator.generateResponse(HttpStatus.OK,"Item with Id "+itemId+" deleted successfully",null);
 			} else {
 				return ResponseGenerator.generateResponse(HttpStatus.NOT_FOUND,"Item with Id " + itemId +" not found!!! ", null);
