@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Container } from 'react-bootstrap';
+import { useNavigate } from 'react-router';
 import { Navigate } from 'react-router-dom';
 
 function ApplyLoan() {
@@ -15,6 +16,7 @@ let [loanCards, setLoanCards ] = useState([]);
     let [itemValue, setItemValue] = useState('');
     let [itemMake, setItemMake] = useState([]);
     let [selectedItemMake, setSelectedItemMake] = useState('');
+    const navigate = useNavigate(); 
 
     useEffect(()=>{
         axios.get("http://localhost:8080/loanCard/all")
@@ -95,6 +97,7 @@ let [loanCards, setLoanCards ] = useState([]);
         axios.post("http://localhost:8080/loan/apply", requestBody)
         .then((res) => {
             alert(res.data.message);
+            navigate(`/loan/all`)
         })
         .catch((err) => {
             console.log(err);

@@ -61,7 +61,7 @@ const MainComponent = () => {
               <Route path="/about" element={<AboutUsComponent />} />
               <Route path="/register" element={<Register  user={user} loginUser = {loginUser}/>} />
               <Route path="/login" element={<Login  user={user} role={role} loginUser = {loginUser}/>} />
-              <Route path="/loan/:username/all" element={<ViewLoan user={user} />} />
+              <Route path="/loan/all" element={<ViewLoan />} />
               <Route path="/loan/apply" element={<ApplyLoan user={user} />} />
               <Route path="*" element={<NotFoundComponent />} />
               <Route path="/loan/apply" element={<ApplyLoan />}/>

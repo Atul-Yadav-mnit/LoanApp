@@ -46,7 +46,7 @@ public class EmployeeIssueService {
 			if(item.isPresent() && employee.isPresent() && loanCard.isPresent())
 			{
 				int numberOfYears = loanCard.get().getDurationOfYears();
-				Date returnDate = addYearsToDate(new Date(), numberOfYears);
+				Date returnDate = Utils.addYearsToDate(new Date(), numberOfYears);
 				EmployeeIssueDetails employeeIssueDetails = new EmployeeIssueDetails(Utils.generateUniqueId(),employee.get(),item.get(),new Date(),returnDate);
 				employeeIssueRepository.save(employeeIssueDetails);
 				return employeeIssueDetails;
@@ -63,7 +63,9 @@ public class EmployeeIssueService {
 				return ResponseGenerator.generateResponse(HttpStatus.BAD_REQUEST, "Invalid Employee ID", null);
 			}
 			List<EmployeeIssueDetails> employeeIssueList = employeeIssueRepository.findByEmployee(employee.get());
-			return ResponseGenerator.generateResponse(HttpStatus.OK,"", employeeIssueList);
+			Date currentDate = new Date();
+			List<EmployeeIssueDetails> filteredEmployeeIssueList = employeeIssueList.stream().filter(issue -> issue.getReturnDate().after(currentDate)).toList();
+			return ResponseGenerator.generateResponse(HttpStatus.OK,"", filteredEmployeeIssueList);
 		}
 
 	public void updateReturnDate(String itemCategory, Integer newDurationOfYears) {
@@ -72,17 +74,10 @@ public class EmployeeIssueService {
 			Date oldReturnDate = issue.getReturnDate();
 			Date currentDate = new Date();
 			if (oldReturnDate.after(currentDate)) {
-				Date newReturnDate = addYearsToDate(issue.getIssueDate(), newDurationOfYears);
+				Date newReturnDate = Utils.addYearsToDate(issue.getIssueDate(), newDurationOfYears);
 				issue.setReturnDate(newReturnDate);
 				employeeIssueRepository.save(issue);
 			}
 		}
-	}
-
-	public Date addYearsToDate(Date date, int yearsToAdd) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		calendar.add(Calendar.YEAR, yearsToAdd);
-		return calendar.getTime();
 	}
 }

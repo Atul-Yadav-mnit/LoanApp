@@ -3,8 +3,9 @@ import { Form, Button, Container } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const ViewLoan = ({ user, loginUser }) => {
+const ViewLoan = ({ loginUser }) => {
 
+    let [user, setUser] = useState(sessionStorage.getItem("username"));
     const [loanDetails, setLoanDetails] = useState([]);
     const [designation, setDesignation] = useState("");
     const [department, setDepartment] = useState("");

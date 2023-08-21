@@ -1,5 +1,6 @@
 package com.wellsfargo.loanapp.service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -49,8 +50,15 @@ public class EmployeeCardService {
 
 	public ResponseEntity<List<EmployeeCardDetails>> getAllEmployeeCard(String employeeId) {
 		Optional<EmployeeMaster> employee = employeeRepository.findById(employeeId);
+		if (employee.isEmpty()) {
+			return ResponseGenerator.generateResponse(HttpStatus.BAD_REQUEST, "Invalid Employee ID", null);
+		}
 		List<EmployeeCardDetails> employeeCardList = employeeCardRepository.findByEmployee(employee.get());
-		return ResponseGenerator.generateResponse(HttpStatus.OK,"", employeeCardList);
+		List<EmployeeCardDetails> filteredEmployeeCardList = employeeCardList.stream().filter(card -> {
+			Date returnDate = Utils.addYearsToDate(card.getCardIssueDate(), card.getLoanCard().getDurationOfYears());
+			return returnDate.after(new Date());
+		}).toList();
+		return ResponseGenerator.generateResponse(HttpStatus.OK,"", filteredEmployeeCardList);
 	}
 
 }
