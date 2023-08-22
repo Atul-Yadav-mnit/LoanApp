@@ -39,7 +39,7 @@ public class EmployeeController {
 	@PostMapping("/add")
 	//public String saveEmployee(@RequestBody EmployeeMaster employee)
 //	public ResponseEntity<EmployeeMaster> saveEmployee(@Valid @RequestBody EmployeeMaster employee, BindingResult bindingResult)
-	public ResponseEntity<EmployeeMaster> saveEmployee(@RequestBody EmployeeMaster employee)
+	public ResponseEntity<EmployeeMaster> saveEmployee(@Valid @RequestBody EmployeeMaster employee)
 	{
 		return employeeService.saveEmployee(employee);
 	}

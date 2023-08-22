@@ -1,22 +1,19 @@
 package com.wellsfargo.loanapp.model;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-
-import org.antlr.v4.runtime.misc.NotNull;
-import org.springframework.format.annotation.DateTimeFormat;
+//import org.antlr.v4.runtime.misc.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class EmployeeMaster {
@@ -28,12 +25,16 @@ public class EmployeeMaster {
 	public String employeeID;
 	
 	@Column(length = 20)
+	@NotNull(message="employee name can't be null")
+	@Size(min=2, max=20, message="name must be betweeen 2 to 20 characters")
 	private String employeeName;
 	
 	@Column(length = 25)
+	@NotNull(message="employee designation can't be null")
 	private String designation;
 	
 	@Column(length = 25)
+	@NotNull(message="employee department can't be null")
 	private String department;
 	
 	@Column()
@@ -41,13 +42,16 @@ public class EmployeeMaster {
 	
 	@Column()
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
+	@Past(message="invalid date of birth")
 	private LocalDate dateOfBirth;
 	
 	@Column()
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
+	@PastOrPresent(message="date of joining can't be in future")
 	private LocalDate dateOfJoining;
 	
 	@Column()
+	@NotBlank(message = "password cannot be blank")
 	private String password;
 
 	public String getEmployeeID() {

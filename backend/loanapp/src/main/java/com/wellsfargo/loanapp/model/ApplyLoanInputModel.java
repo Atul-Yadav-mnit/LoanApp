@@ -1,9 +1,17 @@
 package com.wellsfargo.loanapp.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class ApplyLoanInputModel {
 	
+	@NotNull(message="Employee Id can't be empty")
 	public String employeeId;
+	
+	@NotBlank(message="Loan Card id can't be empty")
 	public String loanCardId;
+	
+	@NotNull(message="Item Id can't be empty")
 	public String itemId;
 	
 	public String getEmployeeId() {
