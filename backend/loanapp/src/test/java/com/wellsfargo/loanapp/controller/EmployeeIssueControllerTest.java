@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wellsfargo.loanapp.dto.EmployeeIssueDTO;
 import com.wellsfargo.loanapp.model.EmployeeCardDetails;
 import com.wellsfargo.loanapp.model.EmployeeIssueDetails;
 import com.wellsfargo.loanapp.service.EmployeeCardService;
@@ -38,19 +39,19 @@ public class EmployeeIssueControllerTest {
 	
 	ObjectMapper objectMapper = new ObjectMapper();
 	
-	public EmployeeIssueDetails getEmployeeIssue()
+	public EmployeeIssueDTO getEmployeeIssue()
 	{
-		return new EmployeeIssueDetails();
+		return new EmployeeIssueDTO();
 	}
 	
 	@Test
 	public void getAllEmployeeCard_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
 		
-		List<EmployeeIssueDetails> employeeIssueList = new ArrayList<>();
+		List<EmployeeIssueDTO> employeeIssueList = new ArrayList<>();
 		employeeIssueList.add(getEmployeeIssue());
 		String employeeId = "123456";
 		
-		ResponseEntity<List<EmployeeIssueDetails>> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employeeIssueList);
+		ResponseEntity<List<EmployeeIssueDTO>> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employeeIssueList);
 		
 		when(employeeIssueService.getAllEmployeeIssue(employeeId)).thenReturn(response);
 		

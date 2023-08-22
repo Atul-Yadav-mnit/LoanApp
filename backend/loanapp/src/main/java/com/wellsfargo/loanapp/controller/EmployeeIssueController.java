@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wellsfargo.loanapp.dto.EmployeeIssueDTO;
 import com.wellsfargo.loanapp.model.EmployeeIssueDetails;
 import com.wellsfargo.loanapp.service.EmployeeIssueService;
 
@@ -29,7 +30,7 @@ public class EmployeeIssueController {
 //	}
 	
 	@GetMapping("/{employeeId}/all")
-	public ResponseEntity<List<EmployeeIssueDetails>> getAllEmployeeIssue(@PathVariable("employeeId") String employeeId)
+	public ResponseEntity<List<EmployeeIssueDTO>> getAllEmployeeIssue(@PathVariable("employeeId") String employeeId)
 	{
 		return employeeIssueService.getAllEmployeeIssue(employeeId);
 	}

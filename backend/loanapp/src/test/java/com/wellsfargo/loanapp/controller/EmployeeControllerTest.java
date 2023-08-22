@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wellsfargo.loanapp.dto.EmployeeDTO;
 import com.wellsfargo.loanapp.model.EmployeeMaster;
 import com.wellsfargo.loanapp.model.LoginModel;
 import com.wellsfargo.loanapp.service.EmployeeService;
@@ -42,13 +43,13 @@ public class EmployeeControllerTest {
 	
 	ObjectMapper objectMapper = new ObjectMapper();
 	
-	public EmployeeMaster getEmployee()
+	public EmployeeDTO getEmployee()
 	{
-		EmployeeMaster employee = new EmployeeMaster();
-		employee.setEmployeeId("123456");
+		EmployeeDTO employee = new EmployeeDTO();
+		employee.setEmployeeID("123456");
 		employee.setDepartment("Technology");
 		employee.setDesignation("SE1");
-		employee.setEmployeeId("Wooden");
+		employee.setEmployeeID("Wooden");
 		employee.setEmployeeName("Test");
 		employee.setGender('M');
 		employee.setPassword("password");
@@ -58,11 +59,11 @@ public class EmployeeControllerTest {
 	@Test
 	public void saveEmployee_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
 		String jsonContent = "{\"employeeName\":\"Test\",\"designation\":\"SE1\",\"department\":\"Technology\",\"gender\":\"M\",\"dateOfBirth\":\"2001-09-06\",\"dateOfJoining\":\"2023-08-24\",\"password\":\"password\"}";
-		EmployeeMaster employee = getEmployee();
+		EmployeeDTO employee = getEmployee();
 		
-		ResponseEntity<EmployeeMaster> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employee);
+		ResponseEntity<EmployeeDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employee);
 		
-		when(employeeService.saveEmployee(any(EmployeeMaster.class))).thenReturn(response);
+		when(employeeService.saveEmployee(any(EmployeeDTO.class))).thenReturn(response);
 		
 		MvcResult result = mvc.perform(post("/employee/add")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -73,15 +74,15 @@ public class EmployeeControllerTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		
-		verify(employeeService,times(1)).saveEmployee(any(EmployeeMaster.class));
+		verify(employeeService,times(1)).saveEmployee(any(EmployeeDTO.class));
 	}
 	
 	@Test
 	public void employeeLogin_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
 		String jsonContent = "{\"employeeId\":\"123456\",\"password\":\"password\"}";
-		EmployeeMaster employee = getEmployee();
+		EmployeeDTO employee = getEmployee();
 		
-		ResponseEntity<EmployeeMaster> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employee);
+		ResponseEntity<EmployeeDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employee);
 		
 		when(employeeService.employeeLogin(any(LoginModel.class))).thenReturn(response);
 		
@@ -100,11 +101,11 @@ public class EmployeeControllerTest {
 	@Test
 	public void getAllEmployeeDetails_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
 		
-		List<EmployeeMaster> employeeList = new ArrayList<>();
+		List<EmployeeDTO> employeeList = new ArrayList<>();
 		employeeList.add(getEmployee());
 		String userName = "admin";
 		
-		ResponseEntity<List<EmployeeMaster>> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employeeList);
+		ResponseEntity<List<EmployeeDTO>> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employeeList);
 		
 		when(employeeService.getAllEmployeeDetails(eq(userName))).thenReturn(response);
 		
@@ -121,11 +122,11 @@ public class EmployeeControllerTest {
 	@Test
 	public void getEmployeeDetails_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
 		
-		EmployeeMaster employee = getEmployee();
+		EmployeeDTO employee = getEmployee();
 		String employeeId = employee.getEmployeeID();
 		String userName = "admin";
 		
-		ResponseEntity<EmployeeMaster> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employee);
+		ResponseEntity<EmployeeDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employee);
 		
 		when(employeeService.getEmployeeDetails(eq(employeeId))).thenReturn(response);
 		
@@ -142,13 +143,13 @@ public class EmployeeControllerTest {
 	@Test
 	public void updateEmployee_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
 		String jsonContent = "{\"itemDescription\":\"Description\",\"issueStatus\":\"1\",\"itemMake\":\"Wooden\",\"itemCategory\":\"Furniture\",\"itemValuation\":2000}";
-		EmployeeMaster employee = getEmployee();
+		EmployeeDTO employee = getEmployee();
 		String employeeId = employee.getEmployeeID();
 		String userName = "admin";
 		
-		ResponseEntity<EmployeeMaster> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employee);
+		ResponseEntity<EmployeeDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employee);
 		
-		when(employeeService.updateEmployeeDetails(eq(userName), eq(employeeId), any(EmployeeMaster.class))).thenReturn(response);
+		when(employeeService.updateEmployeeDetails(eq(userName), eq(employeeId), any(EmployeeDTO.class))).thenReturn(response);
 		
 		MvcResult result = mvc.perform(put("/employee/"+employeeId+"?userName=admin")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -159,16 +160,16 @@ public class EmployeeControllerTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		
-		verify(employeeService,times(1)).updateEmployeeDetails(eq(userName), eq(employeeId), any(EmployeeMaster.class));
+		verify(employeeService,times(1)).updateEmployeeDetails(eq(userName), eq(employeeId), any(EmployeeDTO.class));
 	}
 	
 	@Test
 	public void deleteEmployee_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
-		EmployeeMaster employee = getEmployee();
+		EmployeeDTO employee = getEmployee();
 		String employeeId = employee.getEmployeeID();
 		String userName = "admin";
 		
-		ResponseEntity<EmployeeMaster> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employee);
+		ResponseEntity<EmployeeDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employee);
 		
 		when(employeeService.deleteEmployee(eq(userName), eq(employeeId))).thenReturn(response);
 		

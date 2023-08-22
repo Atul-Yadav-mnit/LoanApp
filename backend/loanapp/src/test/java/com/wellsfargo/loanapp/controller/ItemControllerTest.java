@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wellsfargo.loanapp.dto.ItemDTO;
 import com.wellsfargo.loanapp.model.ItemMaster;
 import com.wellsfargo.loanapp.service.ItemService;
 import com.wellsfargo.loanapp.service.ResponseGenerator;
@@ -41,9 +42,9 @@ public class ItemControllerTest {
 	
 	ObjectMapper objectMapper = new ObjectMapper();
 	
-	public ItemMaster getItem()
+	public ItemDTO getItem()
 	{
-		ItemMaster item = new ItemMaster();
+		ItemDTO item = new ItemDTO();
 		item.setItemId("123456");
 		item.setIssueStatus('1');
 		item.setItemCategory("Furniture");
@@ -56,10 +57,10 @@ public class ItemControllerTest {
 	@Test
 	public void getAllItems_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
 		
-		List<ItemMaster> itemList = new ArrayList<>();
+		List<ItemDTO> itemList = new ArrayList<>();
 		itemList.add(getItem());
 		
-		ResponseEntity<List<ItemMaster>> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,itemList);
+		ResponseEntity<List<ItemDTO>> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,itemList);
 		
 		when(itemService.getAllItems()).thenReturn(response);
 		
@@ -77,12 +78,12 @@ public class ItemControllerTest {
 	@Test
 	public void saveItem_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
 		String jsonContent = "{\"itemDescription\":\"Description\",\"issueStatus\":\"1\",\"itemMake\":\"Wooden\",\"itemCategory\":\"Furniture\",\"itemValuation\":2000}";
-		ItemMaster item = getItem();
+		ItemDTO item = getItem();
 		String userName = "admin";
 		
-		ResponseEntity<ItemMaster> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,item);
+		ResponseEntity<ItemDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,item);
 		
-		when(itemService.saveItem(eq(userName), any(ItemMaster.class))).thenReturn(response);
+		when(itemService.saveItem(eq(userName), any(ItemDTO.class))).thenReturn(response);
 		
 		MvcResult result = mvc.perform(post("/item/add?userName=admin")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -93,19 +94,19 @@ public class ItemControllerTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		
-		verify(itemService,times(1)).saveItem(eq(userName), any(ItemMaster.class));
+		verify(itemService,times(1)).saveItem(eq(userName), any(ItemDTO.class));
 	}
 	
 	@Test
 	public void updateItem_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
 		String jsonContent = "{\"itemDescription\":\"Description\",\"issueStatus\":\"1\",\"itemMake\":\"Wooden\",\"itemCategory\":\"Furniture\",\"itemValuation\":2000}";
-		ItemMaster item = getItem();
+		ItemDTO item = getItem();
 		String itemId = item.getItemId();
 		String userName = "admin";
 		
-		ResponseEntity<ItemMaster> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,item);
+		ResponseEntity<ItemDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,item);
 		
-		when(itemService.updateItem(eq(userName), eq(itemId), any(ItemMaster.class))).thenReturn(response);
+		when(itemService.updateItem(eq(userName), eq(itemId), any(ItemDTO.class))).thenReturn(response);
 		
 		MvcResult result = mvc.perform(put("/item/"+itemId+"?userName=admin")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -116,16 +117,16 @@ public class ItemControllerTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		
-		verify(itemService,times(1)).updateItem(eq(userName), eq(itemId), any(ItemMaster.class));
+		verify(itemService,times(1)).updateItem(eq(userName), eq(itemId), any(ItemDTO.class));
 	}
 	
 	@Test
 	public void deleteItem_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
-		ItemMaster item = getItem();
+		ItemDTO item = getItem();
 		String itemId = item.getItemId();
 		String userName = "admin";
 		
-		ResponseEntity<ItemMaster> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,item);
+		ResponseEntity<ItemDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,item);
 		
 		when(itemService.deleteItem(eq(userName), eq(itemId))).thenReturn(response);
 		

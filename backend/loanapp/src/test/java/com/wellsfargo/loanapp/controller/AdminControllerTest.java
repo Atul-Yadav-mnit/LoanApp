@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wellsfargo.loanapp.dto.AdminDTO;
 import com.wellsfargo.loanapp.model.Admin;
 import com.wellsfargo.loanapp.model.ItemMaster;
 import com.wellsfargo.loanapp.service.AdminService;
@@ -39,17 +40,17 @@ public class AdminControllerTest {
 	
 	ObjectMapper objectMapper = new ObjectMapper();
 	
-	public Admin getAdmin()
+	public AdminDTO getAdmin()
 	{
-		return new Admin();
+		return new AdminDTO();
 	}
 	
 	@Test
 	public void adminLogin_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
 		String json = "{ \"username\" : \"admin\", \"password\" : \"password\"}";
-		Admin admin = getAdmin();
+		AdminDTO admin = getAdmin();
 		
-		ResponseEntity<Admin> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,admin);
+		ResponseEntity<AdminDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,admin);
 		
 		when(adminService.validateAdmin(any())).thenReturn(response);
 		

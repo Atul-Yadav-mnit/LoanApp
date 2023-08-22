@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wellsfargo.loanapp.dto.AdminDTO;
 import com.wellsfargo.loanapp.model.Admin;
 import com.wellsfargo.loanapp.service.AdminService;
 
@@ -19,7 +20,7 @@ public class AdminController {
 	AdminService adminService;
 	
 	@PostMapping("/login")
-	public ResponseEntity<Admin> adminLogin(@RequestBody Admin adminLogin) {
-		return adminService.validateAdmin(adminLogin);
+	public ResponseEntity<AdminDTO> adminLogin(@RequestBody AdminDTO adminDto) {
+		return adminService.validateAdmin(adminDto);
 	}
 }

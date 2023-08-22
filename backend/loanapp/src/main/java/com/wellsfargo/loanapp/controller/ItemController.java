@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wellsfargo.loanapp.dto.ItemDTO;
 import com.wellsfargo.loanapp.model.ItemMaster;
 import com.wellsfargo.loanapp.service.ItemService;
 
@@ -27,26 +28,26 @@ public class ItemController {
 	public ItemService itemService;
 	
 	@GetMapping("/all")
-	public ResponseEntity<List<ItemMaster>> getAllItems()
+	public ResponseEntity<List<ItemDTO>> getAllItems()
 	{
 		return itemService.getAllItems();
 	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<ItemMaster> saveItem(@RequestParam String userName, @RequestBody ItemMaster item)
+	public ResponseEntity<ItemDTO> saveItem(@RequestParam String userName, @RequestBody ItemDTO itemDto)
 	{
 	
-		return itemService.saveItem(userName, item);
+		return itemService.saveItem(userName, itemDto);
 	}
 	
 	@PutMapping("/{itemId}")
-	public ResponseEntity<ItemMaster> updateItem(@RequestParam String userName, @PathVariable String itemId,@RequestBody ItemMaster item) {
-		return itemService.updateItem(userName,itemId,item);
+	public ResponseEntity<ItemDTO> updateItem(@RequestParam String userName, @PathVariable String itemId,@RequestBody ItemDTO itemDto) {
+		return itemService.updateItem(userName,itemId,itemDto);
 		
 	}
 	
 	@DeleteMapping("/{itemId}")
-	public ResponseEntity<ItemMaster> deleteItem(@RequestParam String userName, @PathVariable String itemId) {
+	public ResponseEntity<ItemDTO> deleteItem(@RequestParam String userName, @PathVariable String itemId) {
 		return itemService.deleteItem(userName,itemId);
 		
 	}

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wellsfargo.loanapp.dto.LoanCardDTO;
 import com.wellsfargo.loanapp.model.EmployeeMaster;
 import com.wellsfargo.loanapp.model.ItemMaster;
 import com.wellsfargo.loanapp.model.LoanCardMaster;
@@ -29,26 +30,26 @@ public class LoanCardController {
 	public LoanCardService loanCardService;
 	
 	@GetMapping("/all")
-	public ResponseEntity<List<LoanCardMaster>> getAllLoanCards()
+	public ResponseEntity<List<LoanCardDTO>> getAllLoanCards()
 	{
 		return loanCardService.getAllLoanCards();
 	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<LoanCardMaster> saveLoanCard(@RequestParam String userName, @RequestBody LoanCardMaster loanCard)
+	public ResponseEntity<LoanCardDTO> saveLoanCard(@RequestParam String userName, @RequestBody LoanCardDTO loanCardDto)
 	{
 	
-		return loanCardService.saveLoanCard(userName,loanCard);
+		return loanCardService.saveLoanCard(userName,loanCardDto);
 	}
 	
 	@PutMapping("/{loanCardId}")
-	public ResponseEntity<LoanCardMaster> updateLoanCard(@RequestParam String userName, @PathVariable String loanCardId,@RequestBody LoanCardMaster loanCard) {
-		return loanCardService.updateLoanCard(userName,loanCardId,loanCard);
+	public ResponseEntity<LoanCardDTO> updateLoanCard(@RequestParam String userName, @PathVariable String loanCardId,@RequestBody LoanCardDTO loanCardDto) {
+		return loanCardService.updateLoanCard(userName,loanCardId,loanCardDto);
 		
 	}
 
 	@DeleteMapping("/{loanCardId}")
-	public ResponseEntity<LoanCardMaster> deleteLoanCard(@RequestParam String userName, @PathVariable String loanCardId) {
+	public ResponseEntity<LoanCardDTO> deleteLoanCard(@RequestParam String userName, @PathVariable String loanCardId) {
 		return loanCardService.deleteLoanCard(userName,loanCardId);
 		
 	}

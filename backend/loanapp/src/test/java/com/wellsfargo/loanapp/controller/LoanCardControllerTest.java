@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wellsfargo.loanapp.dto.LoanCardDTO;
 import com.wellsfargo.loanapp.model.LoanCardMaster;
 import com.wellsfargo.loanapp.service.LoanCardService;
 import com.wellsfargo.loanapp.service.ResponseGenerator;
@@ -41,9 +42,9 @@ public class LoanCardControllerTest {
 	
 	ObjectMapper objectMapper = new ObjectMapper();
 	
-	public LoanCardMaster getLoanCard()
+	public LoanCardDTO getLoanCard()
 	{
-		LoanCardMaster loanCard = new LoanCardMaster();
+		LoanCardDTO loanCard = new LoanCardDTO();
 		loanCard.setLoanId("123456");
 		loanCard.setLoanType("Furniture");
 		loanCard.setDurationOfYears(13);
@@ -53,10 +54,10 @@ public class LoanCardControllerTest {
 	@Test
 	public void getAllLoanCards_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
 		
-		List<LoanCardMaster> loanCardList = new ArrayList<>();
+		List<LoanCardDTO> loanCardList = new ArrayList<>();
 		loanCardList.add(getLoanCard());
 		
-		ResponseEntity<List<LoanCardMaster>> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,loanCardList);
+		ResponseEntity<List<LoanCardDTO>> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,loanCardList);
 		
 		when(loanCardService.getAllLoanCards()).thenReturn(response);
 		
@@ -74,12 +75,12 @@ public class LoanCardControllerTest {
 	@Test
 	public void saveLoanCard_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
 		String jsonContent = "{\"loanType\":\"Furniture\",\"durationOfYears\":13}";
-		LoanCardMaster loanCard = getLoanCard();
+		LoanCardDTO loanCard = getLoanCard();
 		String userName = "admin";
 		
-		ResponseEntity<LoanCardMaster> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,loanCard);
+		ResponseEntity<LoanCardDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,loanCard);
 		
-		when(loanCardService.saveLoanCard(eq(userName), any(LoanCardMaster.class))).thenReturn(response);
+		when(loanCardService.saveLoanCard(eq(userName), any(LoanCardDTO.class))).thenReturn(response);
 		
 		MvcResult result = mvc.perform(post("/loanCard/add?userName=admin")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -90,19 +91,19 @@ public class LoanCardControllerTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		
-		verify(loanCardService,times(1)).saveLoanCard(eq(userName), any(LoanCardMaster.class));
+		verify(loanCardService,times(1)).saveLoanCard(eq(userName), any(LoanCardDTO.class));
 	}
 	
 	@Test
 	public void updateLoanCard_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
 		String jsonContent = "{\"loanType\":\"Furniture\",\"durationOfYears\":13}";
-		LoanCardMaster loanCard = getLoanCard();
+		LoanCardDTO loanCard = getLoanCard();
 		String loanCardId = loanCard.getLoanId();
 		String userName = "admin";
 		
-		ResponseEntity<LoanCardMaster> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,loanCard);
+		ResponseEntity<LoanCardDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,loanCard);
 		
-		when(loanCardService.updateLoanCard(eq(userName), eq(loanCardId), any(LoanCardMaster.class))).thenReturn(response);
+		when(loanCardService.updateLoanCard(eq(userName), eq(loanCardId), any(LoanCardDTO.class))).thenReturn(response);
 		
 		MvcResult result = mvc.perform(put("/loanCard/"+loanCardId+"?userName=admin")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -113,16 +114,16 @@ public class LoanCardControllerTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		
-		verify(loanCardService,times(1)).updateLoanCard(eq(userName), eq(loanCardId), any(LoanCardMaster.class));
+		verify(loanCardService,times(1)).updateLoanCard(eq(userName), eq(loanCardId), any(LoanCardDTO.class));
 	}
 	
 	@Test
 	public void deleteLoanCard_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
-		LoanCardMaster loanCard = getLoanCard();
+		LoanCardDTO loanCard = getLoanCard();
 		String loanCardId = loanCard.getLoanId();
 		String userName = "admin";
 		
-		ResponseEntity<LoanCardMaster> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,loanCard);
+		ResponseEntity<LoanCardDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,loanCard);
 		
 		when(loanCardService.deleteLoanCard(eq(userName), eq(loanCardId))).thenReturn(response);
 		
