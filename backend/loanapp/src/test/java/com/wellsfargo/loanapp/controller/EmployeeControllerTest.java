@@ -45,10 +45,10 @@ public class EmployeeControllerTest {
 	public EmployeeMaster getEmployee()
 	{
 		EmployeeMaster employee = new EmployeeMaster();
-		employee.setEmployeeId("123456");
+		employee.setEmployeeID("123456");
 		employee.setDepartment("Technology");
 		employee.setDesignation("SE1");
-		employee.setEmployeeId("Wooden");
+		employee.setEmployeeID("Wooden");
 		employee.setEmployeeName("Test");
 		employee.setGender('M');
 		employee.setPassword("password");

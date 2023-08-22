@@ -27,7 +27,7 @@ public class EmployeeService {
 	
 	public ResponseEntity<EmployeeMaster> saveEmployee(EmployeeMaster employee)
 	{
-		employee.employeeID = Utils.generateUniqueId();
+		employee.setEmployeeID(Utils.generateUniqueId());
 		EmployeeMaster createdEmployee = employeeRepository.save(employee);
 		return ResponseGenerator.generateResponse(HttpStatus.CREATED, "Employee created successfully !!!", createdEmployee);
 	}
