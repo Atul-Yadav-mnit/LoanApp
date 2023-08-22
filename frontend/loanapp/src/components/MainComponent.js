@@ -7,7 +7,6 @@ import NotFoundComponent from './NotFoundComponent';
 import Login from './Login'
 import ApplyLoan from './ApplyLoan'
 import NavbarComponent from './NavbarComponent'
-import NavbarComponentAdmin from './NavbarComponentAdmin'
 import ViewLoan from './ViewLoan'
 import UserDashboard from './UserDashboard'
 import ViewItem from './ViewItem'
@@ -22,17 +21,10 @@ import AdminItemEdit from './admin/AdminItemEdit'
 
 const MainComponent = () => {
 
-  const [user,setUser] = useState("");
-  const [role, setRole] = useState("");
+  const [user,setUser] = useState(sessionStorage.getItem("username"));
+  const [role, setRole] = useState(sessionStorage.getItem("role"));
 
-    const navigate = useNavigate();
-
-  useEffect(() => {
-    const username = sessionStorage.getItem("username");
-    const userRole = sessionStorage.getItem("role");
-        setUser(username);
-        setRole(userRole);
-  },[])
+  const navigate = useNavigate();
 
   const loginUser = (username, userRole) =>{
     
@@ -52,8 +44,7 @@ const MainComponent = () => {
 
   return (
       <div className='h-100'>
-        {(role==="admin") ? <NavbarComponentAdmin logoutUser={logoutUser} />
-         : <NavbarComponent user={user} loginUser = {loginUser} logoutUser={logoutUser}/> }
+        <NavbarComponent user={user} role={role} logoutUser={logoutUser} />
         <div className="auth-wrapper h-100">
           <div className="auth-inner h-100">
             <Routes>
@@ -68,25 +59,25 @@ const MainComponent = () => {
               <Route path="/dashboard" element={<UserDashboard />} />
               <Route path="/items" element={<ViewItem />} />
               
-              <Route path="/admin/dashboard"  element={<GuardedRoute isAuth={role==="admin"}/>}>
+              <Route path="/admin/dashboard"  element={<GuardedRoute isAuth={role}/>}>
                 <Route path="/admin/dashboard" element = {<AdminDashboard/>} />
               </Route>
-              <Route path="/admin/employee/add"  element={<GuardedRoute isAuth={role==="admin"}/>}>
+              <Route path="/admin/employee/add"  element={<GuardedRoute isAuth={role}/>}>
                 <Route path="/admin/employee/add" element = {<AdminEmployeeAdd/>} />
               </Route>
-              <Route path="/admin/employee/edit"  element={<GuardedRoute isAuth={role==="admin"}/>}>
+              <Route path="/admin/employee/edit"  element={<GuardedRoute isAuth={role}/>}>
                 <Route path="/admin/employee/edit" element = {<AdminEmployeeEdit/>} />
               </Route>
-              <Route path="/admin/loan/add"  element={<GuardedRoute isAuth={role==="admin"}/>}>
+              <Route path="/admin/loan/add"  element={<GuardedRoute isAuth={role}/>}>
                 <Route path="/admin/loan/add" element = {<AdminLoanAdd/>} />
               </Route>
-              <Route path="/admin/loan/edit"  element={<GuardedRoute isAuth={role==="admin"}/>}>
+              <Route path="/admin/loan/edit"  element={<GuardedRoute isAuth={role}/>}>
                 <Route path="/admin/loan/edit" element = {<AdminLoanEdit/>} />
               </Route>
-              <Route path="/admin/item/add"  element={<GuardedRoute isAuth={role==="admin"}/>}>
+              <Route path="/admin/item/add"  element={<GuardedRoute isAuth={role}/>}>
                 <Route path="/admin/item/add" element = {<AdminItemAdd/>} />
               </Route>
-              <Route path="/admin/item/edit"  element={<GuardedRoute isAuth={role==="admin"}/>}>
+              <Route path="/admin/item/edit"  element={<GuardedRoute isAuth={role}/>}>
                 <Route path="/admin/item/edit" element = {<AdminItemEdit/>} />
               </Route>
 

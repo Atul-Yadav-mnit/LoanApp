@@ -25,7 +25,7 @@ function UserDashboard() {
             <Card.Img variant="top" src={view_loans} /> 
             <Card.Body>
               <Card.Title>
-                <Link to={`/loan/${user}/all`}>
+                <Link to={`/loan/all`}>
                   <Button variant="primary">View Loans</Button>
                 </Link>
               </Card.Title>
