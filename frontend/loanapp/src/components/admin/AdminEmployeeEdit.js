@@ -17,13 +17,75 @@ function AdminEmployeeEdit() {
   const [employees, setEmployees] = useState([]);
   const [showEditForm, setShowEditForm] = useState(false);
 
-  const [editingEmployeeId, setEditingEmployeeId] = useState();
-  const [editingEmployeeName, setEditingEmployeeName] = useState();
-  const [editingEmployeeDesignation, setEditingEmployeeDesignation] = useState();
-  const [editingEmployeeDepartment, setEditingEmployeeDepartment] = useState();
-  const [editingEmployeeGender, setEditingEmployeeGender] = useState();
-  const [editingEmployeeDob, setEditingEmployeeDob] = useState();
-  const [editingEmployeeDoj, setEditingEmployeeDoj] = useState();
+  const [editingEmployee, setEditingEmployee] = useState({
+    employeeID: "",
+    employeeName: "",
+    department: "",
+    designation: "",
+    gender: "",
+    dateOfBirth: "",
+    dateOfJoining: ""
+  })
+
+  const [errors, setErrors] = useState({
+    employeeID: "",
+    employeeName: "",
+    department: "",
+    designation: "",
+    gender: "",
+    dateOfBirth: "",
+    dateOfJoining: ""
+  })
+
+  const validateFields = () => {
+    let newErrors = {};
+  
+    if (!editingEmployee.employeeID) {
+      newErrors.employeeID = "Employee ID is required";
+    }
+  
+    if (!editingEmployee.employeeName) {
+      newErrors.employeeName = "Employee Name is required";
+    }
+  
+    if (!editingEmployee.department) {
+      newErrors.department = "Department is required";
+    }
+  
+    if (!editingEmployee.designation) {
+      newErrors.designation = "Designation is required";
+    }
+  
+    if (!editingEmployee.gender) {
+      newErrors.gender = "Gender is required";
+    } else if (editingEmployee.gender !== "M" && editingEmployee.gender !== "F") {
+      newErrors.gender = "Gender must be 'M' or 'F'";
+    }
+  
+    if (!editingEmployee.dateOfBirth) {
+      newErrors.dateOfBirth = "Date of Birth is required";
+    } else {
+      const currentDate = new Date();
+      const dob = new Date(editingEmployee.dateOfBirth);
+      if (dob >= currentDate) {
+        newErrors.dateOfBirth = "Date of Birth must be before the current date";
+      }
+    }
+  
+    if (!editingEmployee.dateOfJoining) {
+      newErrors.dateOfJoining = "Date of Joining is required";
+    } else {
+      const currentDate = new Date();
+      const doj = new Date(editingEmployee.dateOfJoining);
+      if (doj >= currentDate) {
+        newErrors.dateOfJoining = "Date of Joining must be before the current date";
+      }
+    }
+  
+    setErrors(newErrors);
+    console.log(newErrors);
+    return Object.values(newErrors).every(error => error === "");
+  };
 
   useEffect(() => {
     fetchAllEmployee();
@@ -62,29 +124,26 @@ function AdminEmployeeEdit() {
       alert("Invalid Employee selected to edit!")
     }
 
-    const editingEmployee = filteredEmployee[0];
-    setEditingEmployeeId(editingEmployee.employeeID);
-    setEditingEmployeeName(editingEmployee.employeeName);
-    setEditingEmployeeDesignation(editingEmployee.designation);
-    setEditingEmployeeDepartment(editingEmployee.department);
-    setEditingEmployeeGender(editingEmployee.gender);
-    setEditingEmployeeDob(editingEmployee.dateOfBirth);
-    setEditingEmployeeDoj(editingEmployee.dateOfJoining);
+    setEditingEmployee(filteredEmployee[0]);
     handleOpen();
   }
 
-  const handleEditSubmit =()=>{
+  const handleChange = (e) => {
+    setEditingEmployee({
+      ...editingEmployee,
+      [e.target.name] : e.target.value
+    });
+  }
 
-    const requestBody = {
-      employeeID: editingEmployeeId,
-      employeeName: editingEmployeeName,
-      designation: editingEmployeeDesignation,
-      department: editingEmployeeDepartment,
-      gender: editingEmployeeGender,
-      dateOfBirth: editingEmployeeDob,
-      dateOfJoining: editingEmployeeDoj,
-    };
-    axios.put(`http://localhost:8080/employee/${editingEmployeeId}?userName=${userName}`, requestBody)
+  const handleEditSubmit =()=>{
+    const isValid = validateFields();
+    console.log("isvalid", isValid);
+    if (!isValid) {
+      return;
+    }
+
+    const requestBody = editingEmployee;
+    axios.put(`http://localhost:8080/employee/${editingEmployee.employeeID}?userName=${userName}`, requestBody)
       .then((res) => {
         alert(res.data.message);
         fetchAllEmployee();
@@ -110,12 +169,13 @@ function AdminEmployeeEdit() {
         <Modal.Title>Edit Employee</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={(e) => e.preventDefault()} className="p-3 bg-light align-items-center" style={{ width: '50%' }}>
+        <Form onSubmit={(e) => e.preventDefault()} className="p-3 bg-light align-items-center" style={{ width: '50%' }} noValidate>
           <Form.Group controlId="id">
             <Form.Label>Employee Id</Form.Label>
             <Form.Control
               type="text" 
-              value={editingEmployeeId}
+              name="employeeID"
+              value={editingEmployee.employeeID}
               disabled
             />
 
@@ -125,27 +185,36 @@ function AdminEmployeeEdit() {
             <Form.Control
               type="text"
               placeholder="Name"
-              value={editingEmployeeName}
-              onChange={(e) => setEditingEmployeeName(e.target.value)}
+              name="employeeName"
+              value={editingEmployee.employeeName}
+              isInvalid={errors.employeeName}
+              onChange={handleChange}
             />
+            <Form.Control.Feedback type="invalid">{errors.employeeName}</Form.Control.Feedback> 
           </Form.Group>
           <Form.Group controlId="designation">
             <Form.Label>Designation</Form.Label>
             <Form.Control
               type="text"
               placeholder="Designation"
-              value={editingEmployeeDesignation}
-              onChange={(e) => setEditingEmployeeDesignation(e.target.value)}
+              name="designation"
+              value={editingEmployee.designation}
+              isInvalid={errors.designation}
+              onChange={handleChange}
             />
+            <Form.Control.Feedback type="invalid">{errors.designation}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="department">
             <Form.Label>Department</Form.Label>
             <Form.Control
               type="text"
               placeholder="Department"
-              value={editingEmployeeDepartment}
-              onChange={(e) => setEditingEmployeeDepartment(e.target.value)}
+              name="department"
+              value={editingEmployee.department}
+              isInvalid={errors.department}
+              onChange={handleChange}
             />
+            <Form.Control.Feedback type="invalid">{errors.department}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="gender">
                <Form.Label>Gender</Form.Label>
@@ -155,8 +224,9 @@ function AdminEmployeeEdit() {
                    label="Male"
                    name="gender"
                    value="M"
-                   checked={editingEmployeeGender === 'M'}
-                   onChange={(e) => setEditingEmployeeGender(e.target.value)}
+                   checked={editingEmployee.gender === 'M'}
+                   onChange={handleChange}
+                   isInvalid={errors.gender}
                    inline
                  />
                  <Form.Check
@@ -164,29 +234,37 @@ function AdminEmployeeEdit() {
                    label="Female"
                    name="gender"
                    value="F"
-                   checked={editingEmployeeGender === 'F'}
-                   onChange={(e) => setEditingEmployeeGender(e.target.value)}
+                   checked={editingEmployee.gender === 'F'}
+                   onChange={handleChange}
+                   isInvalid={errors.gender}
                    inline
                  />
                </div>
+            <Form.Control.Feedback type="invalid">{errors.gender}</Form.Control.Feedback>
              </Form.Group>
 
              <Form.Group controlId="dob">
                <Form.Label>Date of Birth</Form.Label>
                <Form.Control
                  type="date"
-                 value={editingEmployeeDob}
-                 onChange={(e) => setEditingEmployeeDob(e.target.value)}
+                 value={editingEmployee.dateOfBirth}
+                 isInvalid={errors.dateOfBirth}
+                 name="dateOfBirth"
+                 onChange={handleChange}
                />
+            <Form.Control.Feedback type="invalid">{errors.dateOfBirth}</Form.Control.Feedback>
              </Form.Group>
 
              <Form.Group controlId="doj">
                <Form.Label>Date of Joining</Form.Label>
                <Form.Control
                  type="date"
-                 value={editingEmployeeDoj}
-                 onChange={(e) => setEditingEmployeeDoj(e.target.value)}
+                 value={editingEmployee.dateOfJoining}
+                 isInvalid={errors.dateOfJoining}
+                 name="dateOfJoining"
+                 onChange={handleChange}
                />
+            <Form.Control.Feedback type="invalid">{errors.dateOfJoining}</Form.Control.Feedback>
              </Form.Group>
            </Form>
          </Modal.Body>

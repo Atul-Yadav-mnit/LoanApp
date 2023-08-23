@@ -44,7 +44,11 @@ function AdminLoanEdit() {
 
   const [editingLoanId, setEditingLoanId] = useState("");
   const [editingLoanType, setEditingLoanType] = useState("");
-  const [editingDurationOfYears, setEditingDurationOfYears] = useState("");
+  const [editingDurationOfYears, setEditingDurationOfYears] = useState(0);
+
+  const [errors, setErrors] = useState({
+    durationOfYears: ""
+  });
 
   useEffect(() => {
     fetchAllLoanCards();
@@ -85,7 +89,24 @@ function AdminLoanEdit() {
     handleOpen();
   }
 
+  const validateFields = () => {
+    const newErrors = {};
+    if (!editingDurationOfYears) {
+      newErrors.durationOfYears = "Loan Duration cannot be empty";
+    } else if (editingDurationOfYears <= 0) {
+      newErrors.durationOfYears = "Loan duration must be a positive integer";
+    }
+    setErrors(newErrors);
+    console.log(newErrors);
+    return Object.values(newErrors).every(error => error === "");
+  }
+
   const handleEditSubmit = () => {
+      const isValid = validateFields();
+      if (!isValid) {
+        return;
+      }
+
       const requestBody = {
         loanId: editingLoanId,
         loanType: editingLoanType,
@@ -326,7 +347,9 @@ return (
               type="number"
               value={editingDurationOfYears}
               onChange={(e) => setEditingDurationOfYears(e.target.value)}
+              isInvalid={errors.durationOfYears}
             />  
+            <Form.Control.Feedback type="invalid">{errors.durationOfYears}</Form.Control.Feedback>
           </Form.Group>
         </Form>
       </Modal.Body>

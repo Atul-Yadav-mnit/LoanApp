@@ -273,7 +273,7 @@ const adminNavItems = [
             },
             {
                 label: 'View/ Edit Loans',
-                href: 'admin/loan/edit'
+                href: '/admin/loan/edit'
             }
         ]
     },
@@ -286,7 +286,7 @@ const adminNavItems = [
             },
             {
                 label: 'View/ Edit EMployees',
-                href: 'admin/employee/edit'
+                href: '/admin/employee/edit'
             }
         ]
     },
@@ -299,7 +299,7 @@ const adminNavItems = [
             },
             {
                 label: 'View/ Edit Items',
-                href: 'admin/item/edit'
+                href: '/admin/item/edit'
             }
         ]
     },
