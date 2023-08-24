@@ -36,7 +36,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		EmployeeMaster employee = modelMapper.map(employeeDto, EmployeeMaster.class);
 		EmployeeMaster createdEmployee = employeeRepository.save(employee);
 		EmployeeDTO createdEmployeeDto = modelMapper.map(createdEmployee, EmployeeDTO.class);
-		return ResponseGenerator.generateResponse(HttpStatus.CREATED, "Employee created successfully !!!", createdEmployeeDto);
+		return ResponseGenerator.generateResponse(HttpStatus.CREATED, "Employee created successfully", createdEmployeeDto);
 	}
 
 public ResponseEntity<EmployeeDTO> employeeLogin(LoginModel loginModel) {
@@ -46,12 +46,12 @@ public ResponseEntity<EmployeeDTO> employeeLogin(LoginModel loginModel) {
 		EmployeeMaster employeeMaster= optionalEmployee.get();
 		if (employeeMaster.getPassword().equals(loginModel.password)) {
 			EmployeeDTO employeeDto = modelMapper.map(employeeMaster, EmployeeDTO.class);
-			return ResponseGenerator.generateResponse(HttpStatus.OK, "Employee login successfull !!!", employeeDto);
+			return ResponseGenerator.generateResponse(HttpStatus.OK, "Employee login successful", employeeDto);
 		} else {
-			return ResponseGenerator.generateResponse(HttpStatus.OK, "Employee login failed : Invalid Password !!!", null);
+			return ResponseGenerator.generateResponse(HttpStatus.UNAUTHORIZED, "Employee login failed : Invalid Password", null);
 		}
 	}
-	return ResponseGenerator.generateResponse(HttpStatus.OK, "Employee login failed : Invalid User !!!", null);
+	return ResponseGenerator.generateResponse(HttpStatus.UNAUTHORIZED, "Employee login failed : Invalid User", null);
 	}
 
 public ResponseEntity<EmployeeDTO> getEmployeeDetails(String employeeId) {
@@ -62,7 +62,7 @@ public ResponseEntity<EmployeeDTO> getEmployeeDetails(String employeeId) {
 		EmployeeDTO employeeDto = modelMapper.map(employeeMaster, EmployeeDTO.class);
 		return ResponseGenerator.generateResponse(HttpStatus.OK, "", employeeDto);
 	} else {
-		return ResponseGenerator.generateResponse(HttpStatus.NOT_FOUND, "Employee with "+employeeId+" not found !!!", null);
+		return ResponseGenerator.generateResponse(HttpStatus.NOT_FOUND, "Employee with "+employeeId+" not found ", null);
 	}
 }
 
@@ -83,10 +83,10 @@ public ResponseEntity<EmployeeDTO> updateEmployeeDetails(String userName, String
 			EmployeeDTO updatedEmployeeDto = modelMapper.map(updatedEmployee, EmployeeDTO.class);
 			return ResponseGenerator.generateResponse(HttpStatus.OK, "Employee Details Updated", updatedEmployeeDto);
 		} else {
-		    return ResponseGenerator.generateResponse(HttpStatus.NOT_FOUND, "Employee with " + employeeId +" not found!!! ", null);
+		    return ResponseGenerator.generateResponse(HttpStatus.NOT_FOUND, "Employee with " + employeeId +" not found ", null);
 		}
 	}
-	return ResponseGenerator.generateResponse(HttpStatus.UNAUTHORIZED,"Access Denied: Admin level access only!!!", null);
+	return ResponseGenerator.generateResponse(HttpStatus.UNAUTHORIZED,"Access Denied: Admin level access only", null);
 }
 
 public ResponseEntity<List<EmployeeDTO>> getAllEmployeeDetails(String userName) {
@@ -96,7 +96,7 @@ public ResponseEntity<List<EmployeeDTO>> getAllEmployeeDetails(String userName) 
 		List<EmployeeDTO> employeesDTO = employees.stream().map(e -> modelMapper.map(e, EmployeeDTO.class)).collect(Collectors.toList());
 		return ResponseGenerator.generateResponse(HttpStatus.OK,"", employeesDTO);
 	}
-	return ResponseGenerator.generateResponse(HttpStatus.UNAUTHORIZED,"Access Denied: Admin level access only!!!", null);
+	return ResponseGenerator.generateResponse(HttpStatus.UNAUTHORIZED,"Access Denied: Admin level access only", null);
 }
 
 public ResponseEntity<EmployeeDTO> deleteEmployee(String userName, String employeeId) {
@@ -105,12 +105,12 @@ public ResponseEntity<EmployeeDTO> deleteEmployee(String userName, String employ
 		Optional<EmployeeMaster> optionalEmployee = employeeRepository.findById(employeeId);
 		if (optionalEmployee.isPresent()) {
 			employeeRepository.delete(optionalEmployee.get());
-			return ResponseGenerator.generateResponse(HttpStatus.OK, "Employee with Id "+  employeeId +"Deleted Successfully !!!", null);
+			return ResponseGenerator.generateResponse(HttpStatus.OK, "Employee with Id "+  employeeId +"Deleted Successfully ", null);
 		} else {
-			return ResponseGenerator.generateResponse(HttpStatus.NOT_FOUND, "Employee with " + employeeId +" not found!!! ", null);
+			return ResponseGenerator.generateResponse(HttpStatus.NOT_FOUND, "Employee with " + employeeId +" not found ", null);
 		}
 	}
-	return ResponseGenerator.generateResponse(HttpStatus.UNAUTHORIZED,"Access Denied: Admin level access only!!!", null);
+	return ResponseGenerator.generateResponse(HttpStatus.UNAUTHORIZED,"Access Denied: Admin level access only", null);
 }
 
 }

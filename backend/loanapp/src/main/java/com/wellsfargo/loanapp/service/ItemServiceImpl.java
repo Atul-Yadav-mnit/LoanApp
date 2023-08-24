@@ -60,7 +60,7 @@ public class ItemServiceImpl implements ItemService {
 				ItemDTO updatedItemDto = modelMapper.map(updatedItem, ItemDTO.class);
 				return ResponseGenerator.generateResponse(HttpStatus.OK,"Item with Id "+itemId+" details Updated",updatedItemDto);
 			} else {
-				return ResponseGenerator.generateResponse(HttpStatus.NOT_FOUND,"Item with Id " + itemId +" not found!!! ", null);
+				return ResponseGenerator.generateResponse(HttpStatus.NOT_FOUND,"Item with Id " + itemId +" not found", null);
 			}
 		}
 		return ResponseGenerator.generateResponse(HttpStatus.UNAUTHORIZED, "Unauthorised access: Invalid Admin Username", null);  
@@ -74,7 +74,7 @@ public class ItemServiceImpl implements ItemService {
 				itemRepository.delete(optionalItem.get());
 				return ResponseGenerator.generateResponse(HttpStatus.OK,"Item with Id "+itemId+" deleted successfully",null);
 			} else {
-				return ResponseGenerator.generateResponse(HttpStatus.NOT_FOUND,"Item with Id " + itemId +" not found!!! ", null);
+				return ResponseGenerator.generateResponse(HttpStatus.NOT_FOUND,"Item with Id " + itemId +" not found", null);
 			}
 		}
 		return ResponseGenerator.generateResponse(HttpStatus.UNAUTHORIZED, "Unauthorised access: Invalid Admin Username", null);  

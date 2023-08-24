@@ -27,7 +27,7 @@ public class LoanServiceImpl implements LoanService{
 		
 		if(employeeCard!=null && employeeIssue!=null)
 		{
-			return ResponseGenerator.generateResponse(HttpStatus.CREATED, "Loan Application successfull", null);
+			return ResponseGenerator.generateResponse(HttpStatus.CREATED, "Loan Application successful", null);
 		}
 		else if(employeeCard!=null)
 		{

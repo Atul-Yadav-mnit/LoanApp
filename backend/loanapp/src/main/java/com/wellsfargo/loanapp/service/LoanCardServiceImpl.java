@@ -50,9 +50,9 @@ public class LoanCardServiceImpl implements LoanCardService{
 			LoanCardMaster loanCard = modelMapper.map(loanCardDto, LoanCardMaster.class);
 			LoanCardMaster createdLoanCard = loanCardRepository.save(loanCard);
 			LoanCardDTO createdLoanCardDto = modelMapper.map(createdLoanCard, LoanCardDTO.class);
-			return ResponseGenerator.generateResponse(HttpStatus.CREATED, "Loan Card created successfully !!!", createdLoanCardDto);
+			return ResponseGenerator.generateResponse(HttpStatus.CREATED, "Loan Card created successfully", createdLoanCardDto);
 		}
-		return ResponseGenerator.generateResponse(HttpStatus.UNAUTHORIZED, "Unauthorized Access: Invalid Admin username !!!", null);
+		return ResponseGenerator.generateResponse(HttpStatus.UNAUTHORIZED, "Unauthorized Access: Invalid Admin username", null);
 	}
 
 	@Transactional
@@ -73,10 +73,10 @@ public class LoanCardServiceImpl implements LoanCardService{
 				LoanCardDTO updatedLoanCardDto = modelMapper.map(updatedLoanCard, LoanCardDTO.class);
 				return ResponseGenerator.generateResponse(HttpStatus.OK, "Loan Card with Id "+loanCardId+" details Updated", updatedLoanCardDto);
 			} else {
-				return ResponseGenerator.generateResponse(HttpStatus.NOT_FOUND, "Loan Card with Id " + loanCardId +" not found!!! ", null);
+				return ResponseGenerator.generateResponse(HttpStatus.NOT_FOUND, "Loan Card with Id " + loanCardId +" not found", null);
 			}
 		}
-		return  ResponseGenerator.generateResponse(HttpStatus.UNAUTHORIZED, "Unauthorized Access: Invalid Admin username !!!", null);
+		return  ResponseGenerator.generateResponse(HttpStatus.UNAUTHORIZED, "Unauthorized Access: Invalid Admin username", null);
 	}
 
 	public ResponseEntity<LoanCardDTO> deleteLoanCard(String userName, String loanCardId) {
@@ -85,11 +85,11 @@ public class LoanCardServiceImpl implements LoanCardService{
 			Optional<LoanCardMaster> optionalLoanCard = loanCardRepository.findById(loanCardId);
 			if (optionalLoanCard.isPresent()) {
 				loanCardRepository.delete(optionalLoanCard.get());
-				return ResponseGenerator.generateResponse(HttpStatus.OK, "Loan Card with Id "+loanCardId+" deleted successfully !!!", null);
+				return ResponseGenerator.generateResponse(HttpStatus.OK, "Loan Card with Id "+loanCardId+" deleted successfully", null);
 			} else {
-				return ResponseGenerator.generateResponse(HttpStatus.NOT_FOUND, "Loan Card with Id " + loanCardId +" not found!!! ", null);
+				return ResponseGenerator.generateResponse(HttpStatus.NOT_FOUND, "Loan Card with Id " + loanCardId +" not found", null);
 			}
 		}
-		return ResponseGenerator.generateResponse(HttpStatus.UNAUTHORIZED, "Unauthorized Access: Invalid Admin username !!!", null);
+		return ResponseGenerator.generateResponse(HttpStatus.UNAUTHORIZED, "Unauthorized Access: Invalid Admin username", null);
 	}
 }
