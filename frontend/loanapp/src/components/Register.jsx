@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { addEmployee } from "../api/service";
 
 const Register = ({ user, loginUser }) => {
   const [name, setName] = useState("");
@@ -98,8 +98,7 @@ const Register = ({ user, loginUser }) => {
       password,
     };
 
-    axios
-      .post("http://localhost:8080/employee/add", requestBody)
+    addEmployee(requestBody)
       .then((res) => {
         alert("Registered new employee with Id:" + res.data.body.employeeID);
         navigate("/login");

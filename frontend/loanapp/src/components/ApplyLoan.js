@@ -1,8 +1,8 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Form, Container } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { Navigate } from "react-router-dom";
+import { applyLoan, getAllItems, getAllLoanCards } from "../api/service";
 
 function ApplyLoan() {
   let [loanCards, setLoanCards] = useState([]);
@@ -21,8 +21,7 @@ function ApplyLoan() {
   const [validated, setValidated] = useState(false);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/loanCard/all")
+    getAllLoanCards()
       .then((res) => {
         setLoanCards(res.data.body);
         setItemCategory(res.data.body.map((obj) => obj["loanType"]));
@@ -34,8 +33,7 @@ function ApplyLoan() {
   }, []);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/item/all")
+    getAllItems()
       .then((res) => {
         setItems(res.data.body);
       })
@@ -134,8 +132,7 @@ function ApplyLoan() {
       itemId: itemId,
     };
 
-    axios
-      .post("http://localhost:8080/loan/apply", requestBody)
+    applyLoan(requestBody)
       .then((res) => {
         alert(res.data.message);
         navigate(`/loan/all`);

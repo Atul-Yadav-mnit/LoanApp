@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { loginAdmin, loginEmployee } from "../api/service";
 
 const Login = ({ user, role, loginUser }) => {
   const [submitAdmin, setSubmitAdmin] = useState(true);
@@ -49,8 +49,7 @@ const Login = ({ user, role, loginUser }) => {
       password,
     };
 
-    axios
-      .post("http://localhost:8080/employee/login", requestBody)
+    loginEmployee(requestBody)
       .then((res) => {
         alert(res.data.message);
         if (res.data.message.includes("successfull")) {
@@ -75,8 +74,7 @@ const Login = ({ user, role, loginUser }) => {
       password,
     };
 
-    axios
-      .post("http://localhost:8080/admin/login", requestBody)
+    loginAdmin(requestBody)
       .then((res) => {
         alert(res.data.message);
         if (res.data.message.includes("Successfully")) {

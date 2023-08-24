@@ -1,7 +1,7 @@
-import axios from 'axios';
 import React, { useState } from 'react'
 import { Button, Form, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
+import { addLoanCard } from '../../api/service';
 
 function AdminLoanAdd() {
   const userName = sessionStorage.getItem("username");
@@ -9,8 +9,8 @@ function AdminLoanAdd() {
   const [durationOfYears, setDurationOfYears] = useState("");
   const navigate = useNavigate();
 
-  const addLoanCard = () => {
-    axios.post(`http://localhost:8080/loanCard/add?userName=${userName}`, {
+  const sendAddLoanCardRequest = () => {
+    addLoanCard(userName, {
       loanType,
       durationOfYears
     }).then((res) => {
@@ -23,7 +23,7 @@ function AdminLoanAdd() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addLoanCard();
+    sendAddLoanCardRequest();
   }
 
   return (

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getAllEmployeeCards, getEmployee } from "../api/service";
 
 const ViewLoan = ({ loginUser }) => {
 
@@ -12,11 +12,10 @@ const ViewLoan = ({ loginUser }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/employee/${user}`)
+        getEmployee(user)
             .then((res) => {
                 setDesignation(res.data.body.designation);
                 setDepartment(res.data.body.department);
-                //console.log(res.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -27,18 +26,17 @@ const ViewLoan = ({ loginUser }) => {
 
     useEffect(() => {
         if (user != null && user.length > 0) {
-            const loanDetails = fetchLoanDetails(user);
+            fetchLoanDetails(user);
         } else {
             navigate('/login');
         }
 
     }, [user]);
 
-    const fetchLoanDetails = (user) => {
-        axios.get(`http://localhost:8080/employeeCard/${user}/all`)
+    const fetchLoanDetails = (username) => {
+        getAllEmployeeCards(username)
             .then((res) => {
                 setLoanDetails(res.data.body);
-                //console.log(res.data);
             })
             .catch((err) => {
                 console.log(err);

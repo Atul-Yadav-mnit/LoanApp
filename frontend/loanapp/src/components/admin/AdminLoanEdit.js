@@ -1,5 +1,4 @@
 import React, { useState, useEffect} from 'react'
-import axios from 'axios';
 import { Modal, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { ChakraProvider } from "@chakra-ui/react"
@@ -34,6 +33,7 @@ import {
   ChevronRightIcon,
   ChevronLeftIcon
 } from "@chakra-ui/icons";
+import { deleteLoanCard, editLoanCard, getAllLoanCards } from '../../api/service';
 
 
 
@@ -55,7 +55,7 @@ function AdminLoanEdit() {
 }, []);
 
   const fetchAllLoanCards = () => {
-    axios.get(`http://localhost:8080/loanCard/all`)
+    getAllLoanCards()
         .then((res) => {
             setLoanCards(res.data.body);
             //console.log(res.data);
@@ -67,7 +67,7 @@ function AdminLoanEdit() {
   }
 
   const handleDelete = (loanId) => {
-    axios.delete(`http://localhost:8080/loanCard/${loanId}?userName=${userName}`)
+    deleteLoanCard(userName, loanId)
     .then((res) => {
       alert(res.data.message);
       fetchAllLoanCards();
@@ -112,7 +112,7 @@ function AdminLoanEdit() {
         loanType: editingLoanType,
         durationOfYears: editingDurationOfYears
       };
-      axios.put(`http://localhost:8080/loanCard/${editingLoanId}?userName=${userName}`, requestBody)
+      editLoanCard(userName, editingLoanId, requestBody)
       .then((res) => {
         alert(res.data.message);
         fetchAllLoanCards();
