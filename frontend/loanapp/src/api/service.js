@@ -1,9 +1,11 @@
 import axiosInstance from "./axiosInstance";
 import API_URLS from "./apiUrls";
+import { redirect, useNavigate } from "react-router-dom";
+import { successToast } from "../utils/ToastUtils";
 
 
 export const addEmployee = (requestBody) => {
-    return axiosInstance.post(API_URLS.ADD_EMPLOYEE, requestBody);
+    return axiosInstance.post(API_URLS.ADD_EMPLOYEE, {...requestBody, role: "EMPLOYEE"});
 };
 
 export const loginEmployee = (requestBody) => {
@@ -73,3 +75,28 @@ export const editItem = (adminUsername, itemId, requestBody) => {
 export const editLoanCard = (adminUsername, loanCardId, requestBody) => {
     return axiosInstance.put(API_URLS.EDIT_LOAN_CARD(adminUsername, loanCardId), requestBody)
 }
+
+export const logoutUser = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.href='/login';
+}
+
+export const refreshAccessToken = async () => {
+    try {
+        const response = await axiosInstance.post(API_URLS.REFRESH_TOKEN);
+        const newAccessToken = response.data.access_token;
+        const newRefreshToken = response.data.refresh_token;
+
+        localStorage.setItem("access_token", newAccessToken);
+        localStorage.setItem("refresh_token", newRefreshToken);
+
+        successToast('refreshed token successfully');
+
+        return newAccessToken;
+    } catch (error) {
+        logoutUser();
+        return null;
+    }
+}
+

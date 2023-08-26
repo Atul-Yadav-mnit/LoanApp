@@ -22,6 +22,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -107,7 +108,7 @@ public class EmployeeControllerTest {
 		
 		ResponseEntity<List<EmployeeDTO>> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employeeList);
 		
-		when(employeeService.getAllEmployeeDetails(eq(userName))).thenReturn(response);
+		when(employeeService.getAllEmployeeDetails(any(UserDetails.class))).thenReturn(response);
 		
 		MvcResult result = mvc.perform(get("/employee/all?userName="+userName)
 				.accept(MediaType.APPLICATION_JSON))
@@ -116,7 +117,7 @@ public class EmployeeControllerTest {
 				.andExpect(content().json(objectMapper.writeValueAsString(response.getBody())))
 				.andReturn();
 		
-		verify(employeeService,times(1)).getAllEmployeeDetails(eq(userName));
+		verify(employeeService,times(1)).getAllEmployeeDetails(any(UserDetails.class));
 	}
 	
 	@Test
@@ -149,7 +150,7 @@ public class EmployeeControllerTest {
 		
 		ResponseEntity<EmployeeDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employee);
 		
-		when(employeeService.updateEmployeeDetails(eq(userName), eq(employeeId), any(EmployeeDTO.class))).thenReturn(response);
+		when(employeeService.updateEmployeeDetails(any(UserDetails.class), eq(employeeId), any(EmployeeDTO.class))).thenReturn(response);
 		
 		MvcResult result = mvc.perform(put("/employee/"+employeeId+"?userName=admin")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -160,7 +161,7 @@ public class EmployeeControllerTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		
-		verify(employeeService,times(1)).updateEmployeeDetails(eq(userName), eq(employeeId), any(EmployeeDTO.class));
+		verify(employeeService,times(1)).updateEmployeeDetails(any(UserDetails.class), eq(employeeId), any(EmployeeDTO.class));
 	}
 	
 	@Test
@@ -171,7 +172,7 @@ public class EmployeeControllerTest {
 		
 		ResponseEntity<EmployeeDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employee);
 		
-		when(employeeService.deleteEmployee(eq(userName), eq(employeeId))).thenReturn(response);
+		when(employeeService.deleteEmployee(any(UserDetails.class), eq(employeeId))).thenReturn(response);
 		
 		MvcResult result = mvc.perform(delete("/employee/"+employeeId+"?userName=admin")
 				.accept(MediaType.APPLICATION_JSON))
@@ -179,7 +180,7 @@ public class EmployeeControllerTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		
-		verify(employeeService,times(1)).deleteEmployee(eq(userName), eq(employeeId));
+		verify(employeeService,times(1)).deleteEmployee(any(UserDetails.class), eq(employeeId));
 	}
 
 }

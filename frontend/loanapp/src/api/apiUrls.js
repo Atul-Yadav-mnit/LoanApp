@@ -1,8 +1,8 @@
 const API_URLS = {
-    BASE_URL: "http://localhost:8080",
-    ADD_EMPLOYEE: "/employee/add",
-    LOGIN_EMPLOYEE: "/employee/login",
-    LOGIN_ADMIN: "/admin/login",
+    BASE_URL: "http://localhost:8080/api/v1",
+    ADD_EMPLOYEE: "/auth/register",
+    LOGIN_EMPLOYEE: "/auth/authenticate",
+    LOGIN_ADMIN: "/auth/authenticate",
     APPLY_LOAN: "/loan/apply",
     GET_ALL_ITEMS: "/item/all",
     GET_ALL_LOAN_CARDS: "/loanCard/all",
@@ -18,6 +18,7 @@ const API_URLS = {
     EDIT_EMPLOYEE: (adminUsername, employeeId) => `/employee/${employeeId}?userName=${adminUsername}`,
     EDIT_ITEM: (adminUsername, itemId) => `/item/${itemId}?userName=${adminUsername}`,
     EDIT_LOAN_CARD: (adminUsername, loanCardId) => `/loanCard/${loanCardId}?userName=${adminUsername}`,
+    REFRESH_TOKEN: `/auth/refresh-token`
 }
 
 export default API_URLS;

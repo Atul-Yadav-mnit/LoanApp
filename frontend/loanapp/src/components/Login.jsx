@@ -53,7 +53,9 @@ const Login = ({ user, role, loginUser }) => {
     loginEmployee(requestBody)
       .then((res) => {
         successToast(res.data.message);
-          loginUser(employeeID, "user");
+        localStorage.setItem("access_token", res.data.body.access_token);
+        localStorage.setItem("refresh_token", res.data.body.refresh_token);
+        loginUser(employeeID, "user");        
       })
       .catch((err) => {
         console.log(err.response);
@@ -69,16 +71,16 @@ const Login = ({ user, role, loginUser }) => {
     }
 
     const requestBody = {
-      username: employeeID,
+      employeeID,
       password,
     };
 
     loginAdmin(requestBody)
       .then((res) => {
         successToast(res.data.message);
-        if (res.data.message.includes("Successfully")) {
-          loginUser(employeeID, "admin");
-        }
+        localStorage.setItem("access_token", res.data.body.access_token);
+        localStorage.setItem("refresh_token", res.data.body.refresh_token);
+        loginUser(employeeID, "admin");
       })
       .catch((err) => {
         console.log(err);

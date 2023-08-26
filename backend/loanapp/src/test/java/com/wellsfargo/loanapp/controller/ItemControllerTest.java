@@ -12,6 +12,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
+import com.wellsfargo.loanapp.config.TestSecurityConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +26,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -32,6 +38,7 @@ import com.wellsfargo.loanapp.service.ItemService;
 import com.wellsfargo.loanapp.service.ResponseGenerator;
 
 @WebMvcTest(ItemController.class)
+@ContextConfiguration(classes = TestSecurityConfiguration.class)
 public class ItemControllerTest {
 	
 	@Autowired
@@ -85,7 +92,7 @@ public class ItemControllerTest {
 		
 		ResponseEntity<ItemDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,item);
 		
-		when(itemService.saveItem(eq(userName), any(ItemDTO.class))).thenReturn(response);
+		when(itemService.saveItem(any(UserDetails.class), any(ItemDTO.class))).thenReturn(response);
 		
 		MvcResult result = mvc.perform(post("/item/add?userName=admin")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -96,7 +103,7 @@ public class ItemControllerTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		
-		verify(itemService,times(1)).saveItem(eq(userName), any(ItemDTO.class));
+		verify(itemService,times(1)).saveItem(any(UserDetails.class), any(ItemDTO.class));
 	}
 	
 	@Test
@@ -108,7 +115,7 @@ public class ItemControllerTest {
 		
 		ResponseEntity<ItemDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,item);
 		
-		when(itemService.updateItem(eq(userName), eq(itemId), any(ItemDTO.class))).thenReturn(response);
+		when(itemService.updateItem(any(UserDetails.class), eq(itemId), any(ItemDTO.class))).thenReturn(response);
 		
 		MvcResult result = mvc.perform(put("/item/"+itemId+"?userName=admin")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -119,7 +126,7 @@ public class ItemControllerTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		
-		verify(itemService,times(1)).updateItem(eq(userName), eq(itemId), any(ItemDTO.class));
+		verify(itemService,times(1)).updateItem(any(UserDetails.class), eq(itemId), any(ItemDTO.class));
 	}
 	
 	@Test
@@ -130,7 +137,7 @@ public class ItemControllerTest {
 		
 		ResponseEntity<ItemDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,item);
 		
-		when(itemService.deleteItem(eq(userName), eq(itemId))).thenReturn(response);
+		when(itemService.deleteItem(any(UserDetails.class), eq(itemId))).thenReturn(response);
 		
 		MvcResult result = mvc.perform(delete("/item/"+itemId+"?userName=admin")
 				.accept(MediaType.APPLICATION_JSON))
@@ -138,7 +145,7 @@ public class ItemControllerTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		
-		verify(itemService,times(1)).deleteItem(eq(userName), eq(itemId));
+		verify(itemService,times(1)).deleteItem(any(UserDetails.class), eq(itemId));
 	}
 
 }
