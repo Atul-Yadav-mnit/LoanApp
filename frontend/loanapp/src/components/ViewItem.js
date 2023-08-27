@@ -30,6 +30,10 @@ const ViewItem = () => {
   useEffect(() => {
     getAllEmployeeIssues(username)
       .then((res) => {
+        if(res.data.body.length == 0)
+        {
+          successToast(res.data.message)
+        }
         setIssues(res.data.body);
         console.log(res.data.body);
       })

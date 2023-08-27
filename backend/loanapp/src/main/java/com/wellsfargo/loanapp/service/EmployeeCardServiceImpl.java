@@ -66,7 +66,12 @@ public class EmployeeCardServiceImpl implements EmployeeCardService {
 			return returnDate.after(new Date());
 		}).toList();
 		List<EmployeeCardDTO> filteredEmployeeCardListDto = filteredEmployeeCardList.stream().map(e -> modelMapper.map(e, EmployeeCardDTO.class)).collect(Collectors.toList());
-		return ResponseGenerator.generateResponse(HttpStatus.OK,"", filteredEmployeeCardListDto);
+		String message = "";
+		if(filteredEmployeeCardListDto.size() == 0)
+		{
+			message = "No loan cards present for employee "+employeeId+"!!!";
+		}
+		return ResponseGenerator.generateResponse(HttpStatus.OK,message, filteredEmployeeCardListDto);
 	}
 
 }

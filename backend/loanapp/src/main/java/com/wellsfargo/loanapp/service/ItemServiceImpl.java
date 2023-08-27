@@ -33,7 +33,12 @@ public class ItemServiceImpl implements ItemService {
 	{
 		List<ItemMaster> items = itemRepository.findAll();
 		List<ItemDTO> itemsDTO = items.stream().map(e -> modelMapper.map(e, ItemDTO.class)).collect(Collectors.toList());
-		return ResponseGenerator.generateResponse(HttpStatus.OK, null, itemsDTO);
+		String message = "";
+		if(itemsDTO.size() == 0)
+		{
+			message = "No items present !!!";
+		}
+		return ResponseGenerator.generateResponse(HttpStatus.OK, message, itemsDTO);
 	}
 
 	public ResponseEntity<ItemDTO> saveItem(UserDetails userDetails, ItemDTO itemDto) {

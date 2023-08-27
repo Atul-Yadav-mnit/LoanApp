@@ -42,6 +42,10 @@ const ViewLoan = ({ loginUser }) => {
     const fetchLoanDetails = (username) => {
         getAllEmployeeCards(username)
             .then((res) => {
+                if(res.data.body.length == 0)
+                {
+                successToast(res.data.message)
+                }
                 setLoanDetails(res.data.body);
             })
             .catch((err) => {

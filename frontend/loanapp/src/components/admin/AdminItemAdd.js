@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Form, Container } from 'react-bootstrap'
-import { Link,useParams } from 'react-router-dom'
+import { Link,useNavigate,useParams } from 'react-router-dom'
 import { addItem, getAllLoanCards } from '../../api/service';
 import { successToast, failureToast } from "../../utils/ToastUtils";
 import { Button } from "@chakra-ui/react";
@@ -11,6 +11,7 @@ const AdminItemAdd = () => {
     []
  );
   const [loanCards, setLoanCards] = useState([]);
+  const navigate = useNavigate();
 
  const [error, setError] = useState({
     itemDescriptionError: '',
@@ -80,6 +81,7 @@ const AdminItemAdd = () => {
         // console.log(response);
         // console.log(response.data);
         successToast("Item Added Successfully");
+        navigate("/admin/item/edit");
       })
       .catch((error) => {
         console.log(error);

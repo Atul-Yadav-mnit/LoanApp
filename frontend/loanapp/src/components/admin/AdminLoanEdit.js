@@ -58,6 +58,10 @@ function AdminLoanEdit() {
   const fetchAllLoanCards = () => {
     getAllLoanCards()
         .then((res) => {
+          if(res.data.body.length == 0)
+          {
+            successToast(res.data.message)
+          }
             setLoanCards(res.data.body);
             //console.log(res.data);
         })

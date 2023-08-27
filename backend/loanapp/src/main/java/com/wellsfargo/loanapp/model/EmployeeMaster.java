@@ -3,9 +3,9 @@ package com.wellsfargo.loanapp.model;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import com.wellsfargo.loanapp.utils.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -55,6 +55,15 @@ public class EmployeeMaster implements UserDetails {
 //	@Column()
 	private String password;
 
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<EmployeeCardDetails> employeeCards;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<EmployeeIssueDetails> employeeIssues;
+  
 	private Role role;
 
 	@Override
@@ -91,4 +100,5 @@ public class EmployeeMaster implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
+  
 }

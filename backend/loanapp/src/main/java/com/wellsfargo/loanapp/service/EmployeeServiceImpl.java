@@ -96,7 +96,12 @@ public ResponseEntity<List<EmployeeDTO>> getAllEmployeeDetails(UserDetails userD
 	{
 		List<EmployeeMaster> employees = employeeRepository.findAll();
 		List<EmployeeDTO> employeesDTO = employees.stream().map(e -> modelMapper.map(e, EmployeeDTO.class)).collect(Collectors.toList());
-		return ResponseGenerator.generateResponse(HttpStatus.OK,"", employeesDTO);
+		String message = "";
+		if(employeesDTO.size() == 0)
+		{
+			message = "No employee present !!!";
+		}
+		return ResponseGenerator.generateResponse(HttpStatus.OK,message, employeesDTO);
 	}
 	return ResponseGenerator.generateResponse(HttpStatus.UNAUTHORIZED,"Access Denied: Admin level access only", null);
 }

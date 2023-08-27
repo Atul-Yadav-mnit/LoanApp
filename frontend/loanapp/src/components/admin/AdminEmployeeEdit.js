@@ -95,6 +95,10 @@ function AdminEmployeeEdit() {
   const fetchAllEmployee = () => {
     getAllEmployees(userName)
       .then((res) => {
+        if(res.data.body.length == 0)
+        {
+          successToast(res.data.message)
+        }
         setEmployees(res.data.body);
         console.log(res.data);
       })

@@ -28,7 +28,7 @@ public class EmployeeIssueDetails{
 	private String issueId;
 	
 	@ManyToOne(
-			cascade = CascadeType.ALL,
+//			cascade = CascadeType.ALL,
 			fetch = FetchType.EAGER
 	)
 	@JoinColumn(
@@ -38,7 +38,7 @@ public class EmployeeIssueDetails{
 	private EmployeeMaster employee;
 	
 	@ManyToOne(
-			cascade = CascadeType.ALL,
+//			cascade = CascadeType.ALL,
 			fetch = FetchType.EAGER
 	)
 	@JoinColumn(

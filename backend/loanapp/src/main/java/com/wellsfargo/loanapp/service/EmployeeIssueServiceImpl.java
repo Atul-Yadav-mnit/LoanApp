@@ -74,7 +74,12 @@ public class EmployeeIssueServiceImpl implements EmployeeIssueService{
 			Date currentDate = new Date();
 			List<EmployeeIssueDetails> filteredEmployeeIssueList = employeeIssueList.stream().filter(issue -> issue.getReturnDate().after(currentDate)).toList();
 			List<EmployeeIssueDTO> filteredEmployeeIssueListDto = filteredEmployeeIssueList.stream().map(e -> modelMapper.map(e, EmployeeIssueDTO.class)).collect(Collectors.toList());
-			return ResponseGenerator.generateResponse(HttpStatus.OK,"", filteredEmployeeIssueListDto);
+			String message = "";
+			if(filteredEmployeeIssueListDto.size() == 0)
+			{
+				message = "No issues items present for employee "+employeeId+"!!!";
+			}
+			return ResponseGenerator.generateResponse(HttpStatus.OK,message, filteredEmployeeIssueListDto);
 		}
 
 	public void updateReturnDate(String itemCategory, Integer newDurationOfYears) {

@@ -36,6 +36,10 @@ function AdminItemEdit() {
     getAllItems()
       .then((res) => {
         // console.log(res.data);
+        if(res.data.body.length == 0)
+        {
+          successToast(res.data.message)
+        }
         setItemCards(res.data.body);
       })
       .catch((err) => {
