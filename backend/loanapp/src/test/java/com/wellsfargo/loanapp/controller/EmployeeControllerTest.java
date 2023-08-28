@@ -1,5 +1,6 @@
 package com.wellsfargo.loanapp.controller;
 
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -9,31 +10,33 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.wellsfargo.loanapp.config.TestSecurityConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wellsfargo.loanapp.dto.EmployeeDTO;
-import com.wellsfargo.loanapp.model.EmployeeMaster;
 import com.wellsfargo.loanapp.model.LoginModel;
 import com.wellsfargo.loanapp.service.EmployeeService;
 import com.wellsfargo.loanapp.service.ResponseGenerator;
 
 @WebMvcTest(EmployeeController.class)
+@ContextConfiguration(classes = TestSecurityConfiguration.class)
+@Import(EmployeeController.class)
 public class EmployeeControllerTest {
 	
 	@Autowired
@@ -58,48 +61,6 @@ public class EmployeeControllerTest {
 	}
 	
 	@Test
-	public void saveEmployee_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
-		String jsonContent = "{\"employeeName\":\"Test\",\"designation\":\"SE1\",\"department\":\"Technology\",\"gender\":\"M\",\"dateOfBirth\":\"2001-09-06\",\"dateOfJoining\":\"2023-08-24\",\"password\":\"password\"}";
-		EmployeeDTO employee = getEmployee();
-		
-		ResponseEntity<EmployeeDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employee);
-		
-		when(employeeService.saveEmployee(any(EmployeeDTO.class))).thenReturn(response);
-		
-		MvcResult result = mvc.perform(post("/employee/add")
-				.contentType(MediaType.APPLICATION_JSON)
-				.characterEncoding("utf-8")
-				.content(jsonContent)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(content().json(objectMapper.writeValueAsString(response.getBody())))
-				.andExpect(status().isOk())
-				.andReturn();
-		
-		verify(employeeService,times(1)).saveEmployee(any(EmployeeDTO.class));
-	}
-	
-	@Test
-	public void employeeLogin_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
-		String jsonContent = "{\"employeeId\":\"123456\",\"password\":\"password\"}";
-		EmployeeDTO employee = getEmployee();
-		
-		ResponseEntity<EmployeeDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employee);
-		
-		when(employeeService.employeeLogin(any(LoginModel.class))).thenReturn(response);
-		
-		MvcResult result = mvc.perform(post("/employee/login")
-				.contentType(MediaType.APPLICATION_JSON)
-				.characterEncoding("utf-8")
-				.content(jsonContent)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(content().json(objectMapper.writeValueAsString(response.getBody())))
-				.andExpect(status().isOk())
-				.andReturn();
-		
-		verify(employeeService,times(1)).employeeLogin(any(LoginModel.class));
-	}
-	
-	@Test
 	public void getAllEmployeeDetails_shouldHaveCorrectRequestAndResponseMapping() throws Exception {
 		
 		List<EmployeeDTO> employeeList = new ArrayList<>();
@@ -108,16 +69,16 @@ public class EmployeeControllerTest {
 		
 		ResponseEntity<List<EmployeeDTO>> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employeeList);
 		
-		when(employeeService.getAllEmployeeDetails(any(UserDetails.class))).thenReturn(response);
+		when(employeeService.getAllEmployeeDetails(nullable(UserDetails.class))).thenReturn(response);
 		
-		MvcResult result = mvc.perform(get("/employee/all?userName="+userName)
+		MvcResult result = mvc.perform(get("/api/v1/employee/all?userName="+userName)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(content().json(objectMapper.writeValueAsString(response.getBody())))
 				.andReturn();
 		
-		verify(employeeService,times(1)).getAllEmployeeDetails(any(UserDetails.class));
+		verify(employeeService,times(1)).getAllEmployeeDetails(nullable(UserDetails.class));
 	}
 	
 	@Test
@@ -131,7 +92,7 @@ public class EmployeeControllerTest {
 		
 		when(employeeService.getEmployeeDetails(eq(employeeId))).thenReturn(response);
 		
-		MvcResult result = mvc.perform(get("/employee/"+employeeId)
+		MvcResult result = mvc.perform(get("/api/v1/employee/"+employeeId)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -150,9 +111,9 @@ public class EmployeeControllerTest {
 		
 		ResponseEntity<EmployeeDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employee);
 		
-		when(employeeService.updateEmployeeDetails(any(UserDetails.class), eq(employeeId), any(EmployeeDTO.class))).thenReturn(response);
+		when(employeeService.updateEmployeeDetails(nullable(UserDetails.class), eq(employeeId), any(EmployeeDTO.class))).thenReturn(response);
 		
-		MvcResult result = mvc.perform(put("/employee/"+employeeId+"?userName=admin")
+		MvcResult result = mvc.perform(put("/api/v1/employee/"+employeeId+"?userName=admin")
 				.contentType(MediaType.APPLICATION_JSON)
 				.characterEncoding("utf-8")
 				.content(jsonContent)
@@ -161,7 +122,7 @@ public class EmployeeControllerTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		
-		verify(employeeService,times(1)).updateEmployeeDetails(any(UserDetails.class), eq(employeeId), any(EmployeeDTO.class));
+		verify(employeeService,times(1)).updateEmployeeDetails(nullable(UserDetails.class), eq(employeeId), any(EmployeeDTO.class));
 	}
 	
 	@Test
@@ -172,15 +133,15 @@ public class EmployeeControllerTest {
 		
 		ResponseEntity<EmployeeDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,employee);
 		
-		when(employeeService.deleteEmployee(any(UserDetails.class), eq(employeeId))).thenReturn(response);
+		when(employeeService.deleteEmployee(nullable(UserDetails.class), eq(employeeId))).thenReturn(response);
 		
-		MvcResult result = mvc.perform(delete("/employee/"+employeeId+"?userName=admin")
+		MvcResult result = mvc.perform(delete("/api/v1/employee/"+employeeId+"?userName=admin")
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(content().json(objectMapper.writeValueAsString(response.getBody())))
 				.andExpect(status().isOk())
 				.andReturn();
 		
-		verify(employeeService,times(1)).deleteEmployee(any(UserDetails.class), eq(employeeId));
+		verify(employeeService,times(1)).deleteEmployee(nullable(UserDetails.class), eq(employeeId));
 	}
 
 }

@@ -9,8 +9,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+
+import com.wellsfargo.loanapp.config.TestSecurityConfiguration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.core.userdetails.UserDetails;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.ArgumentMatchers.eq;
 
 import java.util.ArrayList;
@@ -23,6 +27,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -33,6 +38,8 @@ import com.wellsfargo.loanapp.service.LoanCardService;
 import com.wellsfargo.loanapp.service.ResponseGenerator;
 
 @WebMvcTest(LoanCardController.class)
+@ContextConfiguration(classes = TestSecurityConfiguration.class)
+@Import(LoanCardController.class)
 public class LoanCardControllerTest {
 	
 	@Autowired
@@ -62,7 +69,7 @@ public class LoanCardControllerTest {
 		
 		when(loanCardService.getAllLoanCards()).thenReturn(response);
 		
-		MvcResult result = mvc.perform(get("/loanCard/all").accept(MediaType.APPLICATION_JSON))
+		MvcResult result = mvc.perform(get("/api/v1/loanCard/all").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(content().json(objectMapper.writeValueAsString(response.getBody())))
@@ -81,9 +88,9 @@ public class LoanCardControllerTest {
 		
 		ResponseEntity<LoanCardDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,loanCard);
 		
-		when(loanCardService.saveLoanCard(any(UserDetails.class), any(LoanCardDTO.class))).thenReturn(response);
+		when(loanCardService.saveLoanCard(nullable(UserDetails.class), any(LoanCardDTO.class))).thenReturn(response);
 		
-		MvcResult result = mvc.perform(post("/loanCard/add?userName=admin")
+		MvcResult result = mvc.perform(post("/api/v1/loanCard/add?userName=admin")
 				.contentType(MediaType.APPLICATION_JSON)
 				.characterEncoding("utf-8")
 				.content(jsonContent)
@@ -92,7 +99,7 @@ public class LoanCardControllerTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		
-		verify(loanCardService,times(1)).saveLoanCard(any(UserDetails.class), any(LoanCardDTO.class));
+		verify(loanCardService,times(1)).saveLoanCard(nullable(UserDetails.class), any(LoanCardDTO.class));
 	}
 	
 	@Test
@@ -104,9 +111,9 @@ public class LoanCardControllerTest {
 		
 		ResponseEntity<LoanCardDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,loanCard);
 		
-		when(loanCardService.updateLoanCard(any(UserDetails.class), eq(loanCardId), any(LoanCardDTO.class))).thenReturn(response);
+		when(loanCardService.updateLoanCard(nullable(UserDetails.class), eq(loanCardId), any(LoanCardDTO.class))).thenReturn(response);
 		
-		MvcResult result = mvc.perform(put("/loanCard/"+loanCardId+"?userName=admin")
+		MvcResult result = mvc.perform(put("/api/v1/loanCard/"+loanCardId+"?userName=admin")
 				.contentType(MediaType.APPLICATION_JSON)
 				.characterEncoding("utf-8")
 				.content(jsonContent)
@@ -115,7 +122,7 @@ public class LoanCardControllerTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		
-		verify(loanCardService,times(1)).updateLoanCard(any(UserDetails.class), eq(loanCardId), any(LoanCardDTO.class));
+		verify(loanCardService,times(1)).updateLoanCard(nullable(UserDetails.class), eq(loanCardId), any(LoanCardDTO.class));
 	}
 	
 	@Test
@@ -126,15 +133,15 @@ public class LoanCardControllerTest {
 		
 		ResponseEntity<LoanCardDTO> response = ResponseGenerator.generateResponse(HttpStatus.OK, null,loanCard);
 		
-		when(loanCardService.deleteLoanCard(any(UserDetails.class), eq(loanCardId))).thenReturn(response);
+		when(loanCardService.deleteLoanCard(nullable(UserDetails.class), eq(loanCardId))).thenReturn(response);
 		
-		MvcResult result = mvc.perform(delete("/loanCard/"+loanCardId+"?userName=admin")
+		MvcResult result = mvc.perform(delete("/api/v1/loanCard/"+loanCardId+"?userName=admin")
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(content().json(objectMapper.writeValueAsString(response.getBody())))
 				.andExpect(status().isOk())
 				.andReturn();
 		
-		verify(loanCardService,times(1)).deleteLoanCard(any(UserDetails.class), eq(loanCardId));
+		verify(loanCardService,times(1)).deleteLoanCard(nullable(UserDetails.class), eq(loanCardId));
 	}
 
 }

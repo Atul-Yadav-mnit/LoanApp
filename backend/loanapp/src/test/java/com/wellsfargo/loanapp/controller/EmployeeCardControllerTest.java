@@ -10,13 +10,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import com.wellsfargo.loanapp.config.SecurityConfiguration;
+import com.wellsfargo.loanapp.config.TestSecurityConfiguration;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -27,6 +35,8 @@ import com.wellsfargo.loanapp.service.EmployeeCardService;
 import com.wellsfargo.loanapp.service.ResponseGenerator;
 
 @WebMvcTest(EmployeeCardController.class)
+@ContextConfiguration(classes = TestSecurityConfiguration.class)
+@Import(EmployeeCardController.class)
 public class EmployeeCardControllerTest {
 	
 	@Autowired
@@ -53,7 +63,7 @@ public class EmployeeCardControllerTest {
 		
 		when(employeeCardService.getAllEmployeeCard(employeeId)).thenReturn(response);
 		
-		MvcResult result = mvc.perform(get("/employeeCard/"+employeeId+"/all")
+		MvcResult result = mvc.perform(get("/api/v1/employeeCard/"+employeeId+"/all")
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
