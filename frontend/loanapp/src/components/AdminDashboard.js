@@ -20,9 +20,9 @@ function AdminDashboard() {
 
   return (
     <Container className="d-flex justify-content-center pt-5 mt-5 align-items-center h-100">
-      <Row className="w-80 d-flex">
-        <Col>
-          <Card>
+      <Row className="w-80 my-2 d-flex gx-5"  >
+        <Col py={2} md={4} sm={12}>
+          <Card style={{marginTop:'7px'}}>
             <Card.Img variant="top" src={customer_management} />
             <Card.Body>
               <Card.Title>
@@ -37,8 +37,8 @@ function AdminDashboard() {
             </Card.Body>
           </Card>
         </Col>
-        <Col>
-          <Card>
+        <Col py={2} md={4} sm={12}>
+          <Card  style={{marginTop:'7px'}}>
             <Card.Img variant="top" src={loan_management} />
             <Card.Body>
               <Card.Title>
@@ -53,8 +53,8 @@ function AdminDashboard() {
             </Card.Body>
           </Card>
         </Col>
-        <Col>
-          <Card>
+        <Col py={2} md={4} sm={12}>
+          <Card  style={{marginTop:'7px'}}>
             <Card.Img variant="top" src={item_management} />
             <Card.Body>
               <Card.Title>

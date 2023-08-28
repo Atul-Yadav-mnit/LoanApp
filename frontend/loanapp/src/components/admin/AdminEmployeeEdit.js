@@ -166,7 +166,7 @@ function AdminEmployeeEdit() {
     
     <>
     <Modal show={showEditForm} onHide={handleClose}
-      zindex="2"
+      zindex="299"
       >
       <Modal.Header closeButton>
         <Modal.Title>Edit Employee</Modal.Title>
@@ -284,10 +284,11 @@ function AdminEmployeeEdit() {
           variant='outline'
           position="sticky"
           top="1"
-          zIndex="1"
+          zIndex="199"
           padding="0.5em"
           boxShadow="lg"
           backgroundColor="gray.100"
+          marginTop="3rem"
         >
           <CardHeader
             fontSize="md"
@@ -296,7 +297,7 @@ function AdminEmployeeEdit() {
             >
             Employee ID
             </CardHeader>
-            <CardBody fontSize="md" fontWeight="semibold" width="4em">
+            <CardBody fontSize="md" fontWeight="semibold" >
               Employee Details
             </CardBody>
             
@@ -313,12 +314,12 @@ function AdminEmployeeEdit() {
                 >
                 {employee.employeeID}
               </CardHeader>
-              <CardBody fontSize="md"  width="2em">
+              <CardBody fontSize="md"  >
                 <Text> Employee Name: {employee.employeeName}</Text>  
                 <Text> Designation: {employee.designation}</Text>
                 <Text> Department: {employee.department}</Text>
               </CardBody>
-              <CardBody fontSize="md"  width="2em">
+              <CardBody fontSize="md"  >
                 <Text> Gender: {employee.gender}</Text>
                 <Text> Date of Birth: {employee.dateOfBirth}</Text>
                 <Text> Date of Joining: {employee.dateOfJoining}</Text>
