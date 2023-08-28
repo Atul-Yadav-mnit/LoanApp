@@ -9,13 +9,14 @@ import "react-toastify/dist/ReactToastify.css";
 function App() {
   return (
     <ChakraProvider>
-      <div className="AppParent"></div>
-      <div className="horse"></div>
-      <div className="App">
-        <BrowserRouter>
-          <MainComponent />
-        </BrowserRouter>
-        <ToastContainer />
+      <div className="AppParent">
+        <div className="horse"/>
+        <div className="App">
+          <BrowserRouter>
+            <MainComponent />
+          </BrowserRouter>
+          <ToastContainer />
+        </div>
       </div>
     </ChakraProvider>
   );

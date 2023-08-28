@@ -164,7 +164,7 @@ return (
           overflow='hidden'
           variant='outline'
           position="sticky"
-          top="1"
+          top="16"
           zIndex="199"
           boxShadow="lg"
           backgroundColor="gray.100"

@@ -283,7 +283,7 @@ function AdminEmployeeEdit() {
           overflow='hidden'
           variant='outline'
           position="sticky"
-          top="1"
+          top="16"
           zIndex="199"
           padding="0.5em"
           boxShadow="lg"
